@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AccountSystem implements Database {
     private static Connection conn;
@@ -217,7 +218,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getMovie(String theatreId) {
         try {
-            String sql = "select * from Show where theatreId=?";
+            String sql = "select * from Movie where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, theatreId);
             ResultSet rs = pstmt.executeQuery();
@@ -245,7 +246,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getSeat(String showId) {
         try {
-            String sql = "select * from Show where showId=?";
+            String sql = "select * from Movie where showId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
@@ -264,8 +265,6 @@ public class AccountSystem implements Database {
             return new ArrayList();
         }
     }
-
-//    public static boolean updateAccountInfo(String id, String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
 
     /**
      * return all user info
@@ -298,13 +297,62 @@ public class AccountSystem implements Database {
         }
     }
 
-    public static void main(String[] args) {
-        initializeConnection();
-        ArrayList<HashMap> a=getTheatre();
-        for(HashMap i: a){
-            System.out.println(i.get("id"));
-            System.out.println(i.get("name"));
-            System.out.println(i.get("city"));
+    /**
+     * return true if payment is verified
+     */
+    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
+        try {
+            String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, cardNo);
+            pstmt.setInt(2, CVV);
+            pstmt.setString(3, expDate);
+            pstmt.setString(4, nameOnCard);
+            pstmt.executeQuery();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * return true if voucher is created for the user
+     */
+    public static boolean createVoucher(String userId) {
+        try {
+            String sql = "insert into Voucher (id,userId) values(?,?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, UUID.randomUUID().toString());
+            pstmt.setString(2, userId);
+            pstmt.executeQuery();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * return all user's voucher id in an arrayList
+     */
+    public static ArrayList getVoucher(String userId) {
+        try {
+            String sql = "select id from Voucher where userId=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList res = new ArrayList();
+            while (rs.next()) {
+                res.add(rs.getString("id"));
+            }
+            pstmt.close();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList();
         }
     }
 }
