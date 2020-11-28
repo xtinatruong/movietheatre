@@ -320,9 +320,9 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * return true if payment method is verified
+     * return the balance if payment method is verified
      */
-    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
+    public static double verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -332,69 +332,41 @@ public class AccountSystem implements Database {
             pstmt.setString(4, nameOnCard);
             ResultSet rs = pstmt.executeQuery();
             if (!rs.next()) {
-                return false;
+                return -1;
             }
-            return true;
+            return rs.get("balance");
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
     /**
      * return true if payment is verified
      */
-    public static boolean chargePayment(int cardNo, int CVV, String expDate, String nameOnCard, int price) {
+    public static boolean transaction(int cardNo, int CVV, String expDate, String nameOnCard, double price) {
         try {
-            if (verifyPayment(cardNo, CVV, expDate, nameOnCard)) {
-                int balance = rs.getInt("balance");
-                if (balance > price) {
-                    balance -= price;
-                    String sql2 = "update Card set balance=?  where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
-                    pstmt = conn.prepareStatement(sql2);
-                    pstmt.setInt(1, balance);
-                    pstmt.setInt(2, cardNo);
-                    pstmt.setInt(3, CVV);
-                    pstmt.setString(4, expDate);
-                    pstmt.setString(5, nameOnCard);
-                    pstmt.executeQuery();
-                    pstmt.close();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * return true if refund is added to user's balance
-     */
-    public static boolean refundPayment(int cardNo, int CVV, String expDate, String nameOnCard, int refund) {
-        try {
-            if (verifyPayment(cardNo, CVV, expDate, nameOnCard)) {
-                int balance = rs.getInt("balance") + refund;
-                String sql2 = "update Card set balance=?  where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
+            int balance = verifyPayment(cardNo, CVV, expDate, nameOnCard);
+            if (balance < 0 || (balance + price) < 0) {
+                return false;
+            } else {
+                balance += price;
+                String sql2 = "update Card set balance=? where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
                 pstmt = conn.prepareStatement(sql2);
                 pstmt.setInt(1, balance);
                 pstmt.setInt(2, cardNo);
                 pstmt.setInt(3, CVV);
                 pstmt.setString(4, expDate);
                 pstmt.setString(5, nameOnCard);
-                pstms.executeQuery();
+                pstmt.executeQuery();
                 pstmt.close();
                 return true;
             }
-            return false;
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             e.printStackTrace();
             return false;
         }
-    }
 
     /**
      * return all user's voucher id in an arrayList
