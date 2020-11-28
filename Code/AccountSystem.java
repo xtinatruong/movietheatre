@@ -58,6 +58,34 @@ public class AccountSystem implements Database {
         return new HashMap();
     }
 
+     /**
+     * Return true if the account is successfully signed up
+     */
+    public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
+        try {
+            String sql = "insert into User(id, name, email, password, city, cardNo, CVV, expDate, nameOnCard, paymentDeadline) values(?,?,?,?,?,?,?,?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+            user1 = UUID.randomUUID().toString();
+            pstmt.setString(1, id);
+            pstmt.setString(2, name);
+            pstmt.setString(3, email);
+            pstmt.setString(4, password);
+            pstmt.setString(5, city);
+            pstmt.setInt(6, cardNo);
+            pstmt.setInt(7, CVV);
+            pstmt.setString(8, expDate);
+            pstmt.setString(9, nameOnCardnameOnCard);
+            LocalDate t = LocalDate.now();
+            pstmt.setString(10, (new Date(t.getYear() + 1, t.getMonthValue(), t.getDayOfMonth())).toString());
+            pstmt.executeQuery();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     /**
      * Return true if the user info is successfully updated
      */
