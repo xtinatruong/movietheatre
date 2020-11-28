@@ -104,24 +104,26 @@ public class PopulateDatabase implements Database {
             String sql = "drop table if exists Movie";
             PreparedStatement pstmt = conn.prepareStatement(sql); // construct a statement
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql2 = "create table Movie (id VARCHAR(255), name VARCHAR(255), time VARCHAR(255), theatreId VARCHAR(255), PRIMARY KEY (id))";
+            String sql2 = "create table Movie (id VARCHAR(255), name VARCHAR(255), time VARCHAR(255), theatreId VARCHAR(255), price INTEGER ,PRIMARY KEY (id))";
             pstmt = conn.prepareStatement(sql2);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql3 = "insert into Movie(id, name, time, theatreId) values(?,?,?,?)";
+            String sql3 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql3);
             show1 = UUID.randomUUID().toString();
             pstmt.setString(1, show1);
             pstmt.setString(2, "film1");
             pstmt.setString(3, LocalDateTime.now().toString());
             pstmt.setString(4, theatre1);
+            pstmt.setInt(5, 20);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql4 = "insert into Movie(id, name, time, theatreId) values(?,?,?,?)";
+            String sql4 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql4);
             show2 = UUID.randomUUID().toString();
             pstmt.setString(1, show2);
             pstmt.setString(2, "film2");
             pstmt.setString(3, LocalDateTime.now().toString());
             pstmt.setString(4, theatre2);
+            pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {
@@ -206,16 +208,17 @@ public class PopulateDatabase implements Database {
             String sql = "drop table if exists Card";
             PreparedStatement pstmt = conn.prepareStatement(sql); // construct a statement
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql2 = "create table Card (cardNo INTEGER, CVV INTEGER, expDate VARCHAR(255), nameOnCard VARCHAR(255))";
+            String sql2 = "create table Card (cardNo INTEGER, CVV INTEGER, expDate VARCHAR(255), nameOnCard VARCHAR(255), balance INTEGER)";
             pstmt = conn.prepareStatement(sql2);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
 
-            String sql3 = "insert into Card(cardNo, CVV, expDate, nameOnCard) values(?,?,?,?)";
+            String sql3 = "insert into Card(cardNo, CVV, expDate, nameOnCard, balance) values(?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql3);
             pstmt.setInt(1, 12345678);
             pstmt.setInt(2, 111);
             pstmt.setString(3, (new Date(2023, 5, 5)).toString());
             pstmt.setString(4, "User 1");
+            pstmt.setInt(5, 100);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {

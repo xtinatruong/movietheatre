@@ -9,6 +9,7 @@ public class AccountSystem implements Database {
     public AccountSystem() {
         initializeConnection();
     }
+
     /**
      * Initialize the connection to server
      */
@@ -40,22 +41,21 @@ public class AccountSystem implements Database {
     /**
      * Return a hashmap contains the user's id
      */
-    public static HashMap<String, String> login(String email, String password) {
+    public static HashMap login(String email, String password) {
         String sql = "select id from User where email=? and password=?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
-            HashMap<String, String> result = new HashMap<String, String>();
+            HashMap result = new HashMap();
             result.put("id", rs.getString("id"));
             pstmt.close();
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //return new HashMap();
-        return null;
+        return new HashMap();
     }
 
     /**
@@ -158,11 +158,11 @@ public class AccountSystem implements Database {
      */
     public static boolean isValid(String voucherId) {
         try {
-            String sql = "select COUNT(*) as c from Voucher where id=?";
+            String sql = "select * from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, voucherId);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.getInt('c') == 0) {
+            if (!rs.next()) {
                 return false;
             }
             pstmt.close();
@@ -181,6 +181,24 @@ public class AccountSystem implements Database {
             String sql = "delete from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, voucherId);
+            pstmt.executeQuery();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * return true if voucher is created for the user
+     */
+    public static boolean createVoucher(String userId) {
+        try {
+            String sql = "insert into Voucher (id,userId) values(?,?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, UUID.randomUUID().toString());
+            pstmt.setString(2, userId);
             pstmt.executeQuery();
             pstmt.close();
             return true;
@@ -222,7 +240,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getMovie(String theatreId) {
         try {
-            String sql = "select * from Show where theatreId=?";
+            String sql = "select * from Movie where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, theatreId);
             ResultSet rs = pstmt.executeQuery();
@@ -250,7 +268,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getSeat(String showId) {
         try {
-            String sql = "select * from Show where showId=?";
+            String sql = "select * from Movie where showId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
@@ -270,7 +288,6 @@ public class AccountSystem implements Database {
         }
     }
 
-//    public static boolean updateAccountInfo(String id, String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
     /**
      * return all user info
      * return a Hashmap with the fields:
@@ -305,7 +322,7 @@ public class AccountSystem implements Database {
     /**
      * return true if payment is verified
      */
-    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
+    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard, int price) {
         try {
             String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -313,7 +330,24 @@ public class AccountSystem implements Database {
             pstmt.setInt(2, CVV);
             pstmt.setString(3, expDate);
             pstmt.setString(4, nameOnCard);
-            pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                return false;
+            } else {
+                int balance = rs.getInt("balance");
+                if (balance > price) {
+                    balance -= price;
+                    String sql2 = "update Card set balance=?  where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
+                    pstmt = conn.prepareStatement(sql2);
+                    pstmt.setInt(1, balance);
+                    pstmt.setInt(2, cardNo);
+                    pstmt.setInt(3, CVV);
+                    pstmt.setString(4, expDate);
+                    pstmt.setString(5, nameOnCard);
+                } else {
+                    return false;
+                }
+            }
             pstmt.close();
             return true;
         } catch (SQLException e) {
@@ -323,15 +357,29 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * return true if voucher is created for the user
+     * return true if refund is added to user's balance
      */
-    public static boolean createVoucher(String userId) {
+    public static boolean refundPayment(int cardNo, int CVV, String expDate, String nameOnCard, int refund) {
         try {
-            String sql = "insert into Voucher (id,userId) values(?,?)";
+            String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, UUID.randomUUID().toString());
-            pstmt.setString(2, userId);
-            pstmt.executeQuery();
+            pstmt.setInt(1, cardNo);
+            pstmt.setInt(2, CVV);
+            pstmt.setString(3, expDate);
+            pstmt.setString(4, nameOnCard);
+            ResultSet rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                return false;
+            } else {
+                int balance = rs.getInt("balance") + refund;
+                String sql2 = "update Card set balance=?  where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
+                pstmt = conn.prepareStatement(sql2);
+                pstmt.setInt(1, balance);
+                pstmt.setInt(2, cardNo);
+                pstmt.setInt(3, CVV);
+                pstmt.setString(4, expDate);
+                pstmt.setString(5, nameOnCard);
+            }
             pstmt.close();
             return true;
         } catch (SQLException e) {
