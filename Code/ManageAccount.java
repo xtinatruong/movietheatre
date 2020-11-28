@@ -1,28 +1,43 @@
 import java.awt.event.*;
+import java.util.HashMap;
 
 class ManageAccount implements ActionListener{
     private AccountSystem model;
-    private AccountGUI view;
+    private AccountGUI accountGUI;
+    private SignUpGUI signupGUI;
+    private MenuGUI menuGUI;
 
-    private 
     public ManageAccount(AccountSystem as, AccountGUI gui) {
         this.model = as;
-        this.view = gui;
-
-        view.addLoginListener((ActionEvent event) -> {
-            login();
-        });
-
-        model.initializeConnection();
+        this.accountGUI = gui;
+        accountGUI.setVisible(true);
     }
 
     public void login() {
-        model.login(view.getEmail(), view.getPassword());
+        HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email"), accountGUI.getTextFields().get("password"));
+        if(dbInfo == null) 
+            accountGUI.displayIncorrectLogin();
+        else {
+            accountGUI.setVisible(false);
+            menuGUI.setVisible(true);
+        }
+        
+    }
+
+    public void signup() {
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        if(e.getSource() == accountGUI.getButtons().get("login")) {
+            login();
+        }
+        else if (e.getSource() == accountGUI.getButtons().get("signup")) {
+            accountGUI.setVisible(false);
+            signupGUI.setVisible(true);
+        }
+
 
     }
 }

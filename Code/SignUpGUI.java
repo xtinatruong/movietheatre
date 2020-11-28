@@ -5,6 +5,7 @@ import javax.swing.border.*;
 
 public class SignUpGUI extends JFrame {
 
+	private ManageAccount ma;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -255,4 +256,8 @@ public class SignUpGUI extends JFrame {
 		btnLogInHere.setBounds(188, 2, 85, 23);
 		panel_4.add(btnLogInHere);
 	}
+
+	public void setMA(ManageAccount controller) {
+        ma = controller;
+    }
 }

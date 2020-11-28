@@ -3,7 +3,10 @@ public class RunMovieTheatre {
     public static void main(String[] args) {
         AccountSystem db = new AccountSystem();
         AccountGUI login = new AccountGUI();
-        ManageAccount accountController = new ManageAccount(db, login);
-        login.setMA(accountController);
+        SignUpGUI signup = new SignUpGUI();
+        ManageAccount controller = new ManageAccount(db, login);
+        
+        login.setMA(controller);
+        signup.setMA(controller);
     }
 }

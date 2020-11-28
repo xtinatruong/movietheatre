@@ -10,12 +10,12 @@ import java.awt.Color;
 import javax.swing.border.MatteBorder;
 import java.util.HashMap;
 
-
 public class AccountGUI extends JFrame implements ActionListener{
 
     private JPanel contentPane;
     private ManageAccount ma;
     private HashMap <String, JTextField> textFields;
+    private HashMap <String, JButton> buttons;
 
 	/**
 	 * Launch the application.
@@ -37,7 +37,8 @@ public class AccountGUI extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public AccountGUI() {
-    textFields = new HashMap<String,JTextField>();
+        textFields = new HashMap<String,JTextField>();
+
 		//JFrame
 		setSize(1139, 830);
 		setTitle("Account Login");
@@ -110,8 +111,8 @@ public class AccountGUI extends JFrame implements ActionListener{
 		JPasswordField passwordText = new JPasswordField(20);
 		passwordText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		passwordText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-    passwordText.setBounds(0, 131, 284, 25);
-    textFields.put("passwordText", passwordText);
+        passwordText.setBounds(0, 131, 284, 25);
+        textFields.put("password", passwordText);
 		LoginPanel.add(passwordText);
 		
 		JLabel passwordLabel = new JLabel("Password");
@@ -123,8 +124,8 @@ public class AccountGUI extends JFrame implements ActionListener{
 		emailText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		emailText.setActionCommand("");
 		emailText.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
-    emailText.setBounds(0, 53, 284, 25);
-    textFields.put("emailText", emailText);
+        emailText.setBounds(0, 53, 284, 25);
+        textFields.put("email", emailText);
 		LoginPanel.add(emailText);
 		
 		JLabel label = new JLabel("Email");
@@ -137,9 +138,10 @@ public class AccountGUI extends JFrame implements ActionListener{
 		loginButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		loginButton.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		loginButton.setForeground(new Color(255, 255, 255));
-    loginButton.setBackground(new Color(100, 149, 237));
-    loginButton.setBounds(132, 566, 288, 31);
-		loginButton.addActionListener(ma);
+        loginButton.setBackground(new Color(100, 149, 237));
+        loginButton.setBounds(132, 566, 288, 31);
+        loginButton.addActionListener(ma);
+        buttons.put("login", loginButton);
 		whitePanel.add(loginButton);
 		
 		JPanel signUpPanel = new JPanel();
@@ -163,19 +165,21 @@ public class AccountGUI extends JFrame implements ActionListener{
 		signUpButton.setBackground(new Color(255, 255, 255));
 		signUpButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		signUpButton.setBounds(86, 2, 85, 23);
-		signUpButton.addActionListener(this);
+        signUpButton.addActionListener(ma);
+        buttons.put("signup", signUpButton);
 		signUpPanel.add(signUpButton);
-  }
+		
+    }
     
     public void setMA(ManageAccount controller) {
         ma = controller;
     }
 
-    public String getEmail() {
-        return textFields.get("emailText").getText();
+    public HashMap<String, JTextField> getTextFields() {
+        return textFields;
     }
-    public String getPassword() {
-        return textFields.get("passwordText").getText();
+    public HashMap<String, JButton> getButtons() {
+        return buttons;
     }
     // public void addLoginListener(ActionListener alButton) {
     //     componentMap.get("loginButton").addActionListener(alButton);

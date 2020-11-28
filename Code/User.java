@@ -35,7 +35,7 @@ public class User {
     {
         return city;
     }
-    public String setCity(String city)
+    public void setCity(String city)
     {
         this.city = city;
     }
