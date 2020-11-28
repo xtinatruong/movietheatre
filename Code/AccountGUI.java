@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class AccountGUI extends JFrame implements ActionListener{
 
     private JPanel contentPane;
-    private ManageAccount ma;
+    private GUIController controller;
     private HashMap <String, JTextField> textFields;
     private HashMap <String, JButton> buttons;
 
@@ -140,7 +140,7 @@ public class AccountGUI extends JFrame implements ActionListener{
 		loginButton.setForeground(new Color(255, 255, 255));
         loginButton.setBackground(new Color(100, 149, 237));
         loginButton.setBounds(132, 566, 288, 31);
-        loginButton.addActionListener(ma);
+        loginButton.addActionListener(controller);
         buttons.put("login", loginButton);
 		whitePanel.add(loginButton);
 		
@@ -165,14 +165,14 @@ public class AccountGUI extends JFrame implements ActionListener{
 		signUpButton.setBackground(new Color(255, 255, 255));
 		signUpButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		signUpButton.setBounds(86, 2, 85, 23);
-        signUpButton.addActionListener(ma);
+        signUpButton.addActionListener(controller);
         buttons.put("signup", signUpButton);
 		signUpPanel.add(signUpButton);
 		
     }
     
-    public void setMA(ManageAccount controller) {
-        ma = controller;
+    public void setController(GUIController controller) {
+        this.controller = controller;
     }
 
     public HashMap<String, JTextField> getTextFields() {

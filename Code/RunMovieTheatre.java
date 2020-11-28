@@ -4,9 +4,9 @@ public class RunMovieTheatre {
         AccountSystem db = new AccountSystem();
         AccountGUI login = new AccountGUI();
         SignUpGUI signup = new SignUpGUI();
-        ManageAccount controller = new ManageAccount(db, login);
+        GUIController controller = new GUIController(db, login);
         
-        login.setMA(controller);
-        signup.setMA(controller);
+        login.setController(controller);
+        signup.setController(controller);
     }
 }

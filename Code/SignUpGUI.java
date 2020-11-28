@@ -1,12 +1,17 @@
 import java.awt.*;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.*;
 
 
 public class SignUpGUI extends JFrame {
 
-	private ManageAccount ma;
+	private GUIController controller;
 	private JPanel contentPane;
+	private HashMap<String, JTextField> textFields;
+	private HashMap<String, JButton> buttons;
+
+	
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -233,6 +238,7 @@ public class SignUpGUI extends JFrame {
 		btnSignUp.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		btnSignUp.setBackground(new Color(100, 149, 237));
 		btnSignUp.setBounds(304, 543, 288, 31);
+		btnSignUp.addActionListener(controller);
 		panel.add(btnSignUp);
 		
 		JPanel panel_4 = new JPanel();
@@ -254,10 +260,12 @@ public class SignUpGUI extends JFrame {
 		btnLogInHere.setBorder(null);
 		btnLogInHere.setBackground(Color.WHITE);
 		btnLogInHere.setBounds(188, 2, 85, 23);
+		btnLogInHere.addActionListener(controller);
 		panel_4.add(btnLogInHere);
 	}
 
-	public void setMA(ManageAccount controller) {
-        ma = controller;
-    }
+	public void setController(GUIController controller) {
+        this.controller = controller;
+	}
+	
 }

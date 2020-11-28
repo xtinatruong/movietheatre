@@ -1,20 +1,21 @@
 import java.awt.event.*;
 import java.util.HashMap;
 
-class ManageAccount implements ActionListener{
+class GUIController implements ActionListener{
     private AccountSystem model;
     private AccountGUI accountGUI;
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
 
-    public ManageAccount(AccountSystem as, AccountGUI gui) {
+    public GUIController(AccountSystem as, AccountGUI gui) {
         this.model = as;
         this.accountGUI = gui;
         accountGUI.setVisible(true);
     }
 
     public void login() {
-        HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email"), accountGUI.getTextFields().get("password"));
+        HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email").getText(), 
+                    accountGUI.getTextFields().get("password").getText());
         if(dbInfo == null) 
             accountGUI.displayIncorrectLogin();
         else {
@@ -37,6 +38,7 @@ class ManageAccount implements ActionListener{
             accountGUI.setVisible(false);
             signupGUI.setVisible(true);
         }
+        //else if(e.getSource == )
 
 
     }
