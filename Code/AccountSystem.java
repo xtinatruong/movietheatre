@@ -320,9 +320,9 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * return true if payment is verified
+     * return true if payment method is verified
      */
-    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard, int price) {
+    public static boolean verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -333,7 +333,20 @@ public class AccountSystem implements Database {
             ResultSet rs = pstmt.executeQuery();
             if (!rs.next()) {
                 return false;
-            } else {
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * return true if payment is verified
+     */
+    public static boolean chargePayment(int cardNo, int CVV, String expDate, String nameOnCard, int price) {
+        try {
+            if (verifyPayment(cardNo, CVV, expDate, nameOnCard)) {
                 int balance = rs.getInt("balance");
                 if (balance > price) {
                     balance -= price;
@@ -344,12 +357,14 @@ public class AccountSystem implements Database {
                     pstmt.setInt(3, CVV);
                     pstmt.setString(4, expDate);
                     pstmt.setString(5, nameOnCard);
+                    pstmt.executeQuery();
+                    pstmt.close();
+                    return true;
                 } else {
                     return false;
                 }
             }
-            pstmt.close();
-            return true;
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -361,16 +376,7 @@ public class AccountSystem implements Database {
      */
     public static boolean refundPayment(int cardNo, int CVV, String expDate, String nameOnCard, int refund) {
         try {
-            String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, cardNo);
-            pstmt.setInt(2, CVV);
-            pstmt.setString(3, expDate);
-            pstmt.setString(4, nameOnCard);
-            ResultSet rs = pstmt.executeQuery();
-            if (!rs.next()) {
-                return false;
-            } else {
+            if (verifyPayment(cardNo, CVV, expDate, nameOnCard)) {
                 int balance = rs.getInt("balance") + refund;
                 String sql2 = "update Card set balance=?  where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
                 pstmt = conn.prepareStatement(sql2);
@@ -379,9 +385,11 @@ public class AccountSystem implements Database {
                 pstmt.setInt(3, CVV);
                 pstmt.setString(4, expDate);
                 pstmt.setString(5, nameOnCard);
+                pstms.executeQuery();
+                pstmt.close();
+                return true;
             }
-            pstmt.close();
-            return true;
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
