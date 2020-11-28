@@ -6,6 +6,9 @@ import java.util.UUID;
 public class AccountSystem implements Database {
     private static Connection conn;
 
+    public AccountSystem() {
+        initializeConnection();
+    }
     /**
      * Initialize the connection to server
      */
@@ -37,21 +40,22 @@ public class AccountSystem implements Database {
     /**
      * Return a hashmap contains the user's id
      */
-    public static HashMap login(String email, String password) {
+    public static HashMap<String, String> login(String email, String password) {
         String sql = "select id from User where email=? and password=?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
-            HashMap result = new HashMap();
+            HashMap<String, String> result = new HashMap<String, String>();
             result.put("id", rs.getString("id"));
             pstmt.close();
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new HashMap();
+        //return new HashMap();
+        return null;
     }
 
     /**
@@ -218,7 +222,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getMovie(String theatreId) {
         try {
-            String sql = "select * from Movie where theatreId=?";
+            String sql = "select * from Show where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, theatreId);
             ResultSet rs = pstmt.executeQuery();
@@ -246,7 +250,7 @@ public class AccountSystem implements Database {
      */
     public static ArrayList getSeat(String showId) {
         try {
-            String sql = "select * from Movie where showId=?";
+            String sql = "select * from Show where showId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
@@ -266,6 +270,7 @@ public class AccountSystem implements Database {
         }
     }
 
+//    public static boolean updateAccountInfo(String id, String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
     /**
      * return all user info
      * return a Hashmap with the fields:
