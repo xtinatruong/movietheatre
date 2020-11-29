@@ -20,7 +20,7 @@ class GUIController implements ActionListener{
         HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email").getText(), 
                     accountGUI.getTextFields().get("password").getText());
         if(dbInfo == null) 
-            accountGUI.displayIncorrectLogin();
+            accountGUI.displayError();
         else {
             accountGUI.setVisible(false);
             menuGUI.setVisible(true);
@@ -34,6 +34,7 @@ class GUIController implements ActionListener{
     public void signup() {
         // public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
         String name = signupGUI.getTextFields().get("name").getText();
+        String email = signupGUI.getTextFields().get("email").getText();
         String password = signupGUI.getTextFields().get("password").getText();
         String city = signupGUI.getTextFields().get("city").getText();
         int cardNo = Integer.parseInt(signupGUI.getTextFields().get("cardNo").getText());
@@ -41,12 +42,12 @@ class GUIController implements ActionListener{
         String expDate = signupGUI.getTextFields().get("expDate").getText();
         String nameOnCard = signupGUI.getTextFields().get("nameOnCard").getText();
 
-        if(model.signup(name, password, city, cardNo, CVV, expDate, nameOnCard) {
+        if(model.signup(name, email, password, city, cardNo, CVV, expDate, nameOnCard)) {
             signupGUI.setVisible(false);
             accountGUI.setVisible(true);
         }
         else {
-            signupGUI.displayAccountExists();
+            signupGUI.displayError());
         }
     }
 
@@ -55,6 +56,8 @@ class GUIController implements ActionListener{
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        // login page functionality 
         if(e.getSource() == accountGUI.getButtons().get("login")) {
             login();
         }
@@ -62,13 +65,15 @@ class GUIController implements ActionListener{
             accountGUI.setVisible(false);
             signupGUI.setVisible(true);
         }
+
+        // signup page functionality 
         else if(e.getSource() == signupGUI.getButtons().get("signup"))
             signup();
         else if (e.getSource() == signupGUI.getButtons().get("login")) {
             signupGUI.setVisible(false);
             accountGUI.setVisible(true);
         }
-        
+
 
     }
 }
