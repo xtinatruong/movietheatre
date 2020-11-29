@@ -23,6 +23,7 @@ public class SignUpGUI extends JFrame {
 	private JTextField nameOnCardTextField;
 	
 	private JButton btnSignUp = new JButton("Sign Up");
+	private JButton btnLogInHere = new JButton("Log In here");
 
 	/**
 	 * Launch the application.
@@ -271,7 +272,6 @@ public class SignUpGUI extends JFrame {
 		alreadyHaveAccountPanel.add(lblAlreadyHaveAn);
 		
 		//PLEASE ADD EVENT LISTENER SO THIS BUTTON GOES BACK TO THE LOGIN PAGE
-		JButton btnLogInHere = new JButton("Log In here");
 		btnLogInHere.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnLogInHere.setBorder(null);
 		btnLogInHere.setBackground(Color.WHITE);
@@ -281,9 +281,13 @@ public class SignUpGUI extends JFrame {
 		alreadyHaveAccountPanel.add(btnLogInHere);
 	}
 	
-	public void addSignUpListener(ActionListener signUpListener)
+	public void addSignUpListener(ActionListener listener)
 	{
-		btnSignUp.addActionListener(signUpListener);
+		btnSignUp.addActionListener(listener);
+	}
+	public void addLoginListener(ActionListener listener)
+	{
+		btnLogInHere.addActionListener(listener);
 	}
 
 	public void setController(GUIController controller) {
