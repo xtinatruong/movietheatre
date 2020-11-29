@@ -13,7 +13,7 @@ class GUIController{
         this.loginGUI = gui;
         this.signupGUI = sgui;
         this.menuGUI = mgui;
-        signupGUI.setVisible(false);
+        menuGUI.setVisible(false);
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();

@@ -8,8 +8,9 @@ public class RunMovieTheatre {
 				try {
 					AccountSystem db = new AccountSystem();
 			        LoginGUI login = new LoginGUI();
-			        SignUpGUI signup = new SignUpGUI();
-			        GUIController controller = new GUIController(db, login, signup);
+					SignUpGUI signup = new SignUpGUI();
+					MenuGUI menu = new MenuGUI();
+			        GUIController controller = new GUIController(db, login, signup, menu);
 			        
 			        login.setController(controller);
 			        signup.setController(controller);
