@@ -37,7 +37,7 @@ class GUIController{
 			/* todo */
         });
         menuGUI.addLoginListener((ActionEvent event) -> {
-			signupGUI.setVisible(false);
+			menuGUI.setVisible(false);
             loginGUI.setVisible(true);
 		});
         menuGUI.addVoucherListener((ActionEvent event) -> {
