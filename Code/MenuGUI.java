@@ -99,7 +99,7 @@ public class MenuGUI extends JFrame {
 		loginPanel.add(loginButton);
 
 		// image icon for buttons
-		Image ticketIcon = new ImageIcon(this.getClass().getResource("/ticket.png")).getImage();
+		Image ticketIcon = new ImageIcon(this.getClass().getResource("/shopping.png")).getImage(); // temp
 		Image accountIcon = new ImageIcon(this.getClass().getResource("/account.png")).getImage();
 		Image shoppingIcon = new ImageIcon(this.getClass().getResource("/shopping.png")).getImage();
 		Image discountIcon = new ImageIcon(this.getClass().getResource("/discount.png")).getImage();
