@@ -11,8 +11,6 @@ public class RunMovieTheatre {
 					SignUpGUI signup = new SignUpGUI();
 					MenuGUI menu = new MenuGUI();
 					GUIController controller = new GUIController(db, login, signup, menu);
-					
-					menu.setTRS(controller);
 			        
 			        login.setController(controller);
 			        signup.setController(controller);

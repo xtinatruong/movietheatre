@@ -18,11 +18,14 @@ public class MenuGUI extends JFrame {
 	private GUIController trs;
 	private JPanel contentPane;
 	private JTable movieTable;
+	
+	private JLabel userNameLabel;
 
 	JButton btnDiscountVouchers = new JButton("Discount Vouchers");
 	JButton loginButton = new JButton("Log In");
 	JButton accountInfoButton = new JButton("Account");
 	JButton btnPurchasedTickets = new JButton("Purchased Tickets");
+	String userName = "Guest";
 
 	/**
 	 * Launch the application.
@@ -71,7 +74,7 @@ public class MenuGUI extends JFrame {
 		welcomeLabel.setBounds(41, 128, 228, 38);
 		bluePanel.add(welcomeLabel);
 
-		JLabel userNameLabel = new JLabel("Guest");
+		userNameLabel = new JLabel(userName);
 		userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		userNameLabel.setForeground(Color.WHITE);
 		userNameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -84,7 +87,7 @@ public class MenuGUI extends JFrame {
 		loginPanel.setBounds(10, 11, 134, 27);
 		bluePanel.add(loginPanel);
 
-		JLabel regUserLabel = new JLabel(trs.getUserName());
+		JLabel regUserLabel = new JLabel("");
 		regUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		regUserLabel.setForeground(new Color(255, 255, 255));
 		regUserLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 10));
@@ -201,7 +204,8 @@ public class MenuGUI extends JFrame {
 		btnPurchasedTickets.addActionListener(purchaseListener);
 	}
 
-	public void setTRS(GUIController trs) {
-		this.trs = trs;
+	public void setName(String name) {
+		userName = name;
+		userNameLabel.setText(userName);
 	}
 }

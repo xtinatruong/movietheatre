@@ -60,7 +60,8 @@ class GUIController{
                     loginGUI.getTextFields().get("password").getText());
 
         user = AccountSystem.getUserInfo(id);
-
+        menuGUI.setName(user.getName());
+        System.out.println(user.getName());
         if(id == null) {}
             //loginGUI.displayError();
         else {
@@ -74,7 +75,7 @@ class GUIController{
      * send inputted account info to AccountSystem
      * @return 
      */
-    public String signup() {
+    public void signup() {
         // public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
         String name = signupGUI.getTextFields().get("name").getText();
         String email = signupGUI.getTextFields().get("email").getText();
@@ -96,7 +97,10 @@ class GUIController{
     }
 
     public String getUserName() {
-        return user.getName();
+    	//if(user != null)
+    		//return user.getName();
+    	
+    	return "Guest";
     }
     
     // public void selectTheatre() {
