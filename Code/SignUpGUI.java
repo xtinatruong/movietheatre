@@ -200,7 +200,7 @@ public class SignUpGUI extends JFrame {
 		cvvTextField.setBackground(Color.WHITE);
 		cvvTextField.setActionCommand("");
 		cvvTextField.setBounds(0, 111, 284, 25);
-		textFields.put("cvv", cvv);
+		textFields.put("cvv", cvvTextField);
 		cardInfoPanel.add(cvvTextField);
 		
 		JLabel lblCvv = new JLabel("* CVV");
