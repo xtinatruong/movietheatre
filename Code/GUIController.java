@@ -1,28 +1,29 @@
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class GUIController implements ActionListener{
     private AccountSystem model;
-    private AccountGUI accountGUI;
+    private LoginGUI loginGUI;
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
 
-    public GUIController(AccountSystem as, AccountGUI gui) {
+    public GUIController(AccountSystem as, LoginGUI gui) {
         this.model = as;
-        this.accountGUI = gui;
-        accountGUI.setVisible(true);
+        this.loginGUI = gui;
+        loginGUI.setVisible(true);
     }
 
     /**
      * verify login information inputted with AccountSystem
      */
     public void login() {
-        HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email").getText(), 
-                    accountGUI.getTextFields().get("password").getText());
+        HashMap<String,String> dbInfo = model.login(loginGUI.getTextFields().get("email").getText(), 
+                    loginGUI.getTextFields().get("password").getText());
         if(dbInfo == null) 
-            accountGUI.displayError();
+            loginGUI.displayError();
         else {
-            accountGUI.setVisible(false);
+            loginGUI.setVisible(false);
             menuGUI.setVisible(true);
         }
         
@@ -44,11 +45,33 @@ class GUIController implements ActionListener{
 
         if(model.signup(name, email, password, city, cardNo, CVV, expDate, nameOnCard)) {
             signupGUI.setVisible(false);
-            accountGUI.setVisible(true);
+            loginGUI.setVisible(true);
         }
         else {
-            signupGUI.displayError());
+            signupGUI.displayError();
         }
+    }
+
+    
+    // public void selectTheatre() {
+    //     ArrayList<Theatre> theatres = AccountSystem.getTheatres();
+    //     int i = 0;
+    //     String list = "";
+    //     for (Theatre t : theatres) {
+    //         list += "Selection: " + i + "\nTheatre Name: " + t.getName() +
+    //                 "\nCity: " + t.getCity();
+    //         list += "\n*****************************\n";
+    //         menuGUI.sendTheatres(list);
+    //         i++;
+    //     }
+    // }
+
+    public ArrayList<Theatre>  getTheatres() {
+        return AccountSystem.getTheatres();
+    }
+
+    public ArrayList<Movie> getMovies(String theatreId) {
+        return AccountSystem.getMovies(theatreId);
     }
 
     /**
@@ -58,11 +81,11 @@ class GUIController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         // login page functionality 
-        if(e.getSource() == accountGUI.getButtons().get("login")) {
+        if(e.getSource() == loginGUI.getButtons().get("login")) {
             login();
         }
-        else if (e.getSource() == accountGUI.getButtons().get("signup")) {
-            accountGUI.setVisible(false);
+        else if (e.getSource() == loginGUI.getButtons().get("signup")) {
+            loginGUI.setVisible(false);
             signupGUI.setVisible(true);
         }
 
@@ -71,9 +94,19 @@ class GUIController implements ActionListener{
             signup();
         else if (e.getSource() == signupGUI.getButtons().get("login")) {
             signupGUI.setVisible(false);
-            accountGUI.setVisible(true);
+            loginGUI.setVisible(true);
         }
 
+        else if(e.getSource() == menGUI.getButtons().get("login")) {
+            menuGUI.setVisible(true);
+            loginGUI.setVisible(true);
+        }
 
+        // main page functionality
+        else if(e.getSource() == menuGUI.getButtons().get("selectTheatre")) {
+            int tChoice = menuGUI.getTable().get("theatre").getSelectedRow();
+            int mChoice = menuGUI.getTable().get("movie").getSelectedRow();
+        }
     }
+
 }

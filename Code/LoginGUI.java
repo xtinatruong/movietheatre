@@ -10,7 +10,7 @@ import java.awt.Color;
 import javax.swing.border.MatteBorder;
 import java.util.HashMap;
 
-public class AccountGUI extends JFrame implements ActionListener{
+public class LoginGUI extends JFrame implements ActionListener{
 
     private JPanel contentPane;
     private GUIController controller;
@@ -24,7 +24,7 @@ public class AccountGUI extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AccountGUI frame = new AccountGUI();
+					LoginGUI frame = new LoginGUI();
 					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +36,7 @@ public class AccountGUI extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public AccountGUI() {
+	public LoginGUI() {
         textFields = new HashMap<String,JTextField>();
 
 		//JFrame

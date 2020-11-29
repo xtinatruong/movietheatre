@@ -2,7 +2,7 @@
 public class RunMovieTheatre {
     public static void main(String[] args) {
         AccountSystem db = new AccountSystem();
-        AccountGUI login = new AccountGUI();
+        LoginGUI login = new LoginGUI();
         SignUpGUI signup = new SignUpGUI();
         GUIController controller = new GUIController(db, login);
         

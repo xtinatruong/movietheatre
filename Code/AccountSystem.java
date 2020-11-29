@@ -237,27 +237,27 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * return a Arraylist that contains HashMap with the field:
+     * return an ArrayList of Theatre objects with the field:
      * {id, name, city}
      */
-    public static ArrayList getTheatre() {
+    public static ArrayList<Theatre> getTheatres() {
         try {
             String sql = "select * from Theatre";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
-            ArrayList res = new ArrayList();
+            ArrayList<Theatre> theatres= new ArrayList<Theatre>();
             while (rs.next()) {
-                HashMap row = new HashMap();
-                row.put("name", rs.getString("name"));
-                row.put("id", rs.getString("id"));
-                row.put("city", rs.getString("city"));
-                res.add(row);
+                Theatre t = new Theatre();
+                t.setName(rs.getString("name"));
+                t.setID(rs.getInt("id"));
+                t.setCity(rs.getString("city"));
+                theatres.add(t);
             }
             pstmt.close();
-            return res;
+            return theatres;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList();
+            return null;
         }
     }
 
@@ -266,26 +266,27 @@ public class AccountSystem implements Database {
      * return a Arraylist that contains HashMap with the fields:
      * {id, name, theatreId, time}
      */
-    public static ArrayList getMovie(String theatreId) {
+    public static ArrayList<Movie> getMovies(String theatreId) {
         try {
             String sql = "select * from Movie where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, theatreId);
             ResultSet rs = pstmt.executeQuery();
-            ArrayList res = new ArrayList();
+            ArrayList<Movie> movies = new ArrayList<Movie>();
             while (rs.next()) {
-                HashMap row = new HashMap();
-                row.put("name", rs.getString("name"));
-                row.put("id", rs.getString("id"));
-                row.put("theatreId", rs.getString("theatreId"));
-                row.put("time", rs.getString("time"));
-                res.add(row);
+                Movie m = new Movie();
+                m.setName(rs.getString("name"));
+                m.setId(rs.getInt("id"));
+                m.setTheatreId(rs.getInt("theatreId"));
+                m.setTime(rs.getString("time"));
+
+                movies.add(m);
             }
             pstmt.close();
-            return res;
+            return movies;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList();
+            return null;
         }
     }
 
@@ -362,7 +363,7 @@ public class AccountSystem implements Database {
             if (!rs.next()) {
                 return -1;
             }
-            return rs.get("balance");
+            return rs.getDouble("balance");
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
@@ -390,30 +391,31 @@ public class AccountSystem implements Database {
                 pstmt.close();
                 return true;
             }
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
 
     /**
      * return all user's voucher id in an arrayList
      */
-    public static ArrayList getVoucher(String userId) {
+    public static ArrayList<Voucher> getVoucher(String userId) {
         try {
             String sql = "select id from Voucher where userId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-            ArrayList res = new ArrayList();
+            ArrayList <Voucher> vouchers = new ArrayList<Voucher>();
             while (rs.next()) {
-                res.add(rs.getString("id"));
+                Voucher v = new Voucher(rs.getInt("id"), true);
+                vouchers.add(v);
             }
             pstmt.close();
-            return res;
+            return vouchers;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList();
+            return null;
         }
     }
 }

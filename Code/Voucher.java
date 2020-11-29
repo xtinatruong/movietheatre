@@ -1,7 +1,12 @@
 class Voucher{
 	private int id;
 	private boolean valid;
-		
+	
+	public Voucher(int id, boolean valid) {
+		this.id = id;
+		this.valid = valid;
+	}
+	
 	//getters and setters
 	public int getId() {
 		return id;
