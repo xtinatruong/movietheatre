@@ -25,7 +25,7 @@ public class LoginGUI extends JFrame implements ActionListener{
 			public void run() {
 				try {
 					LoginGUI frame = new LoginGUI();
-					//frame.setVisible(true);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -38,6 +38,7 @@ public class LoginGUI extends JFrame implements ActionListener{
 	 */
 	public LoginGUI() {
         textFields = new HashMap<String,JTextField>();
+        buttons = new HashMap<>();
 
 		//JFrame
 		setSize(1139, 830);
@@ -140,7 +141,7 @@ public class LoginGUI extends JFrame implements ActionListener{
 		loginButton.setForeground(new Color(255, 255, 255));
         loginButton.setBackground(new Color(100, 149, 237));
         loginButton.setBounds(132, 566, 288, 31);
-        loginButton.addActionListener(controller);
+        //loginButton.addActionListener(controller);
         buttons.put("login", loginButton);
 		whitePanel.add(loginButton);
 		
@@ -165,7 +166,7 @@ public class LoginGUI extends JFrame implements ActionListener{
 		signUpButton.setBackground(new Color(255, 255, 255));
 		signUpButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		signUpButton.setBounds(86, 2, 85, 23);
-        signUpButton.addActionListener(controller);
+        //signUpButton.addActionListener(controller);
         buttons.put("signup", signUpButton);
 		signUpPanel.add(signUpButton);
 		

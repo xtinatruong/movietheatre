@@ -2,26 +2,32 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class GUIController implements ActionListener{
+class GUIController{
     private AccountSystem model;
     private LoginGUI loginGUI;
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
 
-    public GUIController(AccountSystem as, LoginGUI gui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui) {
         this.model = as;
         this.loginGUI = gui;
-        loginGUI.setVisible(true);
+        this.signupGUI = sgui;
+        signupGUI.setVisible(false);
+        
+        signupGUI.addSignUpListener((ActionEvent event) -> {
+			signup();
+		});
+
     }
 
     /**
      * verify login information inputted with AccountSystem
      */
     public void login() {
-        HashMap<String,String> dbInfo = model.login(loginGUI.getTextFields().get("email").getText(), 
+        HashMap<String,String> dbInfo = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
                     loginGUI.getTextFields().get("password").getText());
-        if(dbInfo == null) 
-            loginGUI.displayError();
+        if(dbInfo == null) {}
+            //loginGUI.displayError();
         else {
             loginGUI.setVisible(false);
             menuGUI.setVisible(true);
@@ -48,7 +54,7 @@ class GUIController implements ActionListener{
             loginGUI.setVisible(true);
         }
         else {
-            signupGUI.displayError();
+            //signupGUI.displayError();
         }
     }
 
@@ -77,36 +83,39 @@ class GUIController implements ActionListener{
     /**
      * defines button functionality and switches GUI pages as needed
      */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        // login page functionality 
-        if(e.getSource() == loginGUI.getButtons().get("login")) {
-            login();
-        }
-        else if (e.getSource() == loginGUI.getButtons().get("signup")) {
-            loginGUI.setVisible(false);
-            signupGUI.setVisible(true);
-        }
-
-        // signup page functionality 
-        else if(e.getSource() == signupGUI.getButtons().get("signup"))
-            signup();
-        else if (e.getSource() == signupGUI.getButtons().get("login")) {
-            signupGUI.setVisible(false);
-            loginGUI.setVisible(true);
-        }
-
-        else if(e.getSource() == menGUI.getButtons().get("login")) {
-            menuGUI.setVisible(true);
-            loginGUI.setVisible(true);
-        }
-
-        // main page functionality
-        else if(e.getSource() == menuGUI.getButtons().get("selectTheatre")) {
-            int tChoice = menuGUI.getTable().get("theatre").getSelectedRow();
-            int mChoice = menuGUI.getTable().get("movie").getSelectedRow();
-        }
-    }
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//        // login page functionality 
+//        if(e.getSource() == loginGUI.getButtons().get("login")) {
+//            login();
+//        }
+//        else if (e.getSource() == loginGUI.getButtons().get("signup")) {
+//        	signupGUI = new SignUpGUI();
+//        	System.out.println("button pressed");
+//        }
+//
+//        // signup page functionality 
+//        else if(e.getSource() == signupGUI.getButtons().get("signup"))
+//        {
+//        	System.out.println("Please work");
+//            signup();
+//        }
+//        else if (e.getSource() == signupGUI.getButtons().get("login")) {
+//            signupGUI.setVisible(false);
+//            loginGUI.setVisible(true);
+//        }
+//
+////        else if(e.getSource() == menGUI.getButtons().get("login")) {
+////            menuGUI.setVisible(true);
+////            loginGUI.setVisible(true);
+////        }
+////
+////        // main page functionality
+////        else if(e.getSource() == menuGUI.getButtons().get("selectTheatre")) {
+////            int tChoice = menuGUI.getTable().get("theatre").getSelectedRow();
+////            int mChoice = menuGUI.getTable().get("movie").getSelectedRow();
+////        }
+//    }
 
 }

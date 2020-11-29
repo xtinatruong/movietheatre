@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -20,6 +21,8 @@ public class SignUpGUI extends JFrame {
 	private JTextField cardNoTextField;
 	private JTextField cvvTextField;
 	private JTextField nameOnCardTextField;
+	
+	private JButton btnSignUp = new JButton("Sign Up");
 
 	/**
 	 * Launch the application.
@@ -41,6 +44,9 @@ public class SignUpGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public SignUpGUI() {
+		textFields = new HashMap<>();
+		buttons = new HashMap<>();
+		
 		//JFrame
 		setSize(1139, 830);
 		setTitle("Account Login");
@@ -242,14 +248,13 @@ public class SignUpGUI extends JFrame {
 		whitePanel.add(lblMissingRequiredFields);
 		
 		//PLEASE ADD EVENT LISTENER HERE SO THAT IT SUBMIT ALL TEXT FIELDS TO ACCOUNT DATABASE
-		JButton btnSignUp = new JButton("Sign Up");
 		btnSignUp.setForeground(Color.WHITE);
 		btnSignUp.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnSignUp.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		btnSignUp.setBackground(new Color(100, 149, 237));
 		btnSignUp.setBounds(304, 543, 288, 31);
 		buttons.put("signup", btnSignUp);
-		btnSignUp.addActionListener(controller);
+		//btnSignUp.addActionListener(controller);
 		whitePanel.add(btnSignUp);
 		
 		JPanel alreadyHaveAccountPanel = new JPanel();
@@ -272,8 +277,13 @@ public class SignUpGUI extends JFrame {
 		btnLogInHere.setBackground(Color.WHITE);
 		btnLogInHere.setBounds(188, 2, 85, 23);
 		buttons.put("login", btnLogInHere);
-		btnLogInHere.addActionListener(controller);
+		//btnLogInHere.addActionListener(controller);
 		alreadyHaveAccountPanel.add(btnLogInHere);
+	}
+	
+	public void addSignUpListener(ActionListener signUpListener)
+	{
+		btnSignUp.addActionListener(signUpListener);
 	}
 
 	public void setController(GUIController controller) {

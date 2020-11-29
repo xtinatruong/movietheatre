@@ -1,12 +1,22 @@
+import java.awt.EventQueue;
 
 public class RunMovieTheatre {
     public static void main(String[] args) {
-        AccountSystem db = new AccountSystem();
-        LoginGUI login = new LoginGUI();
-        SignUpGUI signup = new SignUpGUI();
-        GUIController controller = new GUIController(db, login);
-        
-        login.setController(controller);
-        signup.setController(controller);
+    	
+    	EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AccountSystem db = new AccountSystem();
+			        LoginGUI login = new LoginGUI();
+			        SignUpGUI signup = new SignUpGUI();
+			        GUIController controller = new GUIController(db, login, signup);
+			        
+			        login.setController(controller);
+			        signup.setController(controller);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
     }
 }

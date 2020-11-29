@@ -400,22 +400,22 @@ public class AccountSystem implements Database {
     /**
      * return all user's voucher id in an arrayList
      */
-    public static ArrayList<Voucher> getVoucher(String userId) {
-        try {
-            String sql = "select id from Voucher where userId=?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-            ArrayList <Voucher> vouchers = new ArrayList<Voucher>();
-            while (rs.next()) {
-                Voucher v = new Voucher(rs.getInt("id"), true);
-                vouchers.add(v);
-            }
-            pstmt.close();
-            return vouchers;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public static ArrayList<Voucher> getVoucher(String userId) {
+//        try {
+//            String sql = "select id from Voucher where userId=?";
+//            PreparedStatement pstmt = conn.prepareStatement(sql);
+//            pstmt.setString(1, userId);
+//            ResultSet rs = pstmt.executeQuery();
+//            ArrayList <Voucher> vouchers = new ArrayList<Voucher>();
+//            while (rs.next()) {
+//                Voucher v = new Voucher(rs.getInt("id"), true);
+//                vouchers.add(v);
+//            }
+//            pstmt.close();
+//            return vouchers;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }
