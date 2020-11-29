@@ -8,6 +8,8 @@ class GUIController{
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
 
+    private User user;
+
     public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui) {
         this.model = as;
         this.loginGUI = gui;
@@ -54,9 +56,12 @@ class GUIController{
      * verify login information inputted with AccountSystem
      */
     public void login() {
-        String dbInfo = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
+        String id = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
                     loginGUI.getTextFields().get("password").getText());
-        if(dbInfo == null) {}
+
+        user = AccountSystem.getUserInfo(id);
+
+        if(id == null) {}
             //loginGUI.displayError();
         else {
             loginGUI.setVisible(false);
@@ -67,8 +72,9 @@ class GUIController{
 
     /**
      * send inputted account info to AccountSystem
+     * @return 
      */
-    public void signup() {
+    public String signup() {
         // public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
         String name = signupGUI.getTextFields().get("name").getText();
         String email = signupGUI.getTextFields().get("email").getText();
@@ -86,8 +92,12 @@ class GUIController{
         else {
             //signupGUI.displayError();
         }
+
     }
 
+    public String getUserName() {
+        return user.getName();
+    }
     
     // public void selectTheatre() {
     //     ArrayList<Theatre> theatres = AccountSystem.getTheatres();

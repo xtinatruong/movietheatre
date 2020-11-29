@@ -323,32 +323,35 @@ public class AccountSystem implements Database {
 
     /**
      * return all user info
-     * return a Hashmap with the fields:
+     * return a RegisteredUser object with the fields:
      * {showId, number, availability}
      */
-    public static HashMap getUserInfo(String userId) {
+    public static HashMap<String, String> getUserInfo(String userId) {
         try {
             String sql = "select * from User where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-            HashMap res = new HashMap();
+            
             if (rs.next()) {
-                return res;
+            
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String city = rs.getString("city");
+                String cardNo = rs.getString("cardNo");
+                int cvv = rs.getInt("CVV");
+                String expDate = rs.getString("expDate");
+                String nameOnCard = rs.getString("nameOnCard");  
+
+                RegisteredUser ru = new RegisteredUser(name,city, userId, email, password, cardNo, cvv, expDate, nameOnCard);
+                return ru;
             }
-            res.put("name", rs.getString("name"));
-            res.put("email", rs.getString("email"));
-            res.put("password", rs.getString("password"));
-            res.put("city", rs.getString("city"));
-            res.put("cardNo", rs.getInt("cardNo"));
-            res.put("CVV", rs.getInt("CVV"));
-            res.put("expDate", rs.getString("expDate"));
-            res.put("nameOnCard", rs.getString("nameOnCard"));
             pstmt.close();
-            return res;
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new HashMap();
+            return null;
         }
     }
 

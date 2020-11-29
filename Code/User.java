@@ -1,11 +1,20 @@
 public class User {
     private String name;
     private String city;
+    private String id;
 
-    public User(String name, String city)
-    {
+    public User(String name, String city, String id) {
         this.name = name;
         this.city = city;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void reserveTicket()
