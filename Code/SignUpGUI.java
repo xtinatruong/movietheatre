@@ -88,6 +88,7 @@ public class SignUpGUI extends JFrame {
 		emailTextField.setCaretColor(Color.BLACK);
 		emailTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		emailTextField.setBackground(Color.WHITE);
+		textFields.put("email", emailTextField);
 		emailTextField.setActionCommand("");
 		
 		JLabel lblEmail = new JLabel("* Email");
@@ -112,6 +113,7 @@ public class SignUpGUI extends JFrame {
 		fullNameTextField.setCaretColor(Color.BLACK);
 		fullNameTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		fullNameTextField.setBackground(Color.WHITE);
+		textFields.put("name", fullNameTextField);
 		fullNameTextField.setActionCommand("");
 		
 		cityTextField = new JTextField(20);
@@ -122,6 +124,7 @@ public class SignUpGUI extends JFrame {
 		cityTextField.setCaretColor(Color.BLACK);
 		cityTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		cityTextField.setBackground(Color.WHITE);
+		textFields.put("city", cityTextField);
 		cityTextField.setActionCommand("");
 		
 		JLabel cityLabel = new JLabel("* City");
@@ -137,6 +140,7 @@ public class SignUpGUI extends JFrame {
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		passwordField.setCaretColor(Color.BLACK);
 		passwordField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
+		textFields.put("password", passwordField);
 		passwordField.setBackground(Color.WHITE);
 		
 		JPanel cardInfoPanel = new JPanel();
@@ -160,6 +164,7 @@ public class SignUpGUI extends JFrame {
 		expDateTextField.setBackground(Color.WHITE);
 		expDateTextField.setActionCommand("");
 		expDateTextField.setBounds(0, 179, 284, 25);
+		textFields.put("expDate", expDateTextField);
 		cardInfoPanel.add(expDateTextField);
 		
 		JLabel lblExpirationDate = new JLabel("* Expiration Date");
@@ -184,6 +189,7 @@ public class SignUpGUI extends JFrame {
 		cardNoTextField.setBackground(Color.WHITE);
 		cardNoTextField.setActionCommand("");
 		cardNoTextField.setBounds(0, 43, 284, 25);
+		textFields.put("cardNo", cardNoTextField);
 		cardInfoPanel.add(cardNoTextField);
 		
 		cvvTextField = new JTextField(20);
@@ -194,6 +200,7 @@ public class SignUpGUI extends JFrame {
 		cvvTextField.setBackground(Color.WHITE);
 		cvvTextField.setActionCommand("");
 		cvvTextField.setBounds(0, 111, 284, 25);
+		textFields.put("cvv", cvvTextField);
 		cardInfoPanel.add(cvvTextField);
 		
 		JLabel lblCvv = new JLabel("* CVV");
@@ -211,6 +218,7 @@ public class SignUpGUI extends JFrame {
 		nameOnCardTextField.setBackground(Color.WHITE);
 		nameOnCardTextField.setActionCommand("");
 		nameOnCardTextField.setBounds(0, 247, 284, 25);
+		textFields.put("nameOnCard", nameOnCardTextField);
 		cardInfoPanel.add(nameOnCardTextField);
 		
 		JLabel signUpLabel = new JLabel("SIGN UP");
@@ -240,6 +248,7 @@ public class SignUpGUI extends JFrame {
 		btnSignUp.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		btnSignUp.setBackground(new Color(100, 149, 237));
 		btnSignUp.setBounds(304, 543, 288, 31);
+		buttons.put("signup", btnSignUp);
 		btnSignUp.addActionListener(controller);
 		whitePanel.add(btnSignUp);
 		
@@ -262,12 +271,21 @@ public class SignUpGUI extends JFrame {
 		btnLogInHere.setBorder(null);
 		btnLogInHere.setBackground(Color.WHITE);
 		btnLogInHere.setBounds(188, 2, 85, 23);
+		buttons.put("login", btnLogInHere);
 		btnLogInHere.addActionListener(controller);
 		alreadyHaveAccountPanel.add(btnLogInHere);
 	}
 
 	public void setController(GUIController controller) {
         this.controller = controller;
+	}
+
+	public HashMap<String, JButton> getButtons() {
+		return buttons;
+	}
+
+	public HashMap<String, JTextField> getTextFields() {
+		return textFields;
 	}
 	
 }

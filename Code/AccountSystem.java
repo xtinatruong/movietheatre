@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -64,9 +65,8 @@ public class AccountSystem implements Database {
     public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "insert into User(id, name, email, password, city, cardNo, CVV, expDate, nameOnCard, paymentDeadline) values(?,?,?,?,?,?,?,?,?,?)";
-            pstmt = conn.prepareStatement(sql);
-            user1 = UUID.randomUUID().toString();
-            pstmt.setString(1, id);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, UUID.randomUUID().toString());
             pstmt.setString(2, name);
             pstmt.setString(3, email);
             pstmt.setString(4, password);
@@ -74,7 +74,7 @@ public class AccountSystem implements Database {
             pstmt.setInt(6, cardNo);
             pstmt.setInt(7, CVV);
             pstmt.setString(8, expDate);
-            pstmt.setString(9, nameOnCardnameOnCard);
+            pstmt.setString(9, nameOnCard);
             LocalDate t = LocalDate.now();
             pstmt.setString(10, (new Date(t.getYear() + 1, t.getMonthValue(), t.getDayOfMonth())).toString());
             pstmt.executeQuery();
@@ -374,14 +374,14 @@ public class AccountSystem implements Database {
      */
     public static boolean transaction(int cardNo, int CVV, String expDate, String nameOnCard, double price) {
         try {
-            int balance = verifyPayment(cardNo, CVV, expDate, nameOnCard);
+            double balance = verifyPayment(cardNo, CVV, expDate, nameOnCard);
             if (balance < 0 || (balance + price) < 0) {
                 return false;
             } else {
                 balance += price;
                 String sql2 = "update Card set balance=? where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
-                pstmt = conn.prepareStatement(sql2);
-                pstmt.setInt(1, balance);
+                PreparedStatement pstmt = conn.prepareStatement(sql2);
+                pstmt.setDouble(1, balance);
                 pstmt.setInt(2, cardNo);
                 pstmt.setInt(3, CVV);
                 pstmt.setString(4, expDate);

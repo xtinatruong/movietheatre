@@ -6,7 +6,7 @@ public class FinancialInstitute
         this.name = name;
     }
 
-    public boolean verfiyPayementMethod(int cardNo, int CVV, String expDate, String nameOnCard)
+    public double verfiyPayementMethod(int cardNo, int CVV, String expDate, String nameOnCard)
     {
         return AccountSystem.verifyPayment(cardNo, CVV, expDate, nameOnCard);
     }
