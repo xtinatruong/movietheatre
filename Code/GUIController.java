@@ -54,7 +54,7 @@ class GUIController{
      * verify login information inputted with AccountSystem
      */
     public void login() {
-        HashMap<String,String> dbInfo = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
+        String dbInfo = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
                     loginGUI.getTextFields().get("password").getText());
         if(dbInfo == null) {}
             //loginGUI.displayError();

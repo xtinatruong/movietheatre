@@ -42,21 +42,25 @@ public class AccountSystem implements Database {
     /**
      * Return a hashmap contains the user's id
      */
-    public static HashMap login(String email, String password) {
+    public static String login(String email, String password) {
         String sql = "select id from User where email=? and password=?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, email);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
-            HashMap result = new HashMap();
-            result.put("id", rs.getString("id"));
+            if(rs.next())
+            {
+            	String result = rs.getString("id");
+            	pstmt.close();
+            	return result;
+            }
             pstmt.close();
-            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new HashMap();
+        
+        return null;
     }
 
      /**
