@@ -13,6 +13,9 @@ class GUIController implements ActionListener{
         accountGUI.setVisible(true);
     }
 
+    /**
+     * verify login information inputted with AccountSystem
+     */
     public void login() {
         HashMap<String,String> dbInfo = model.login(accountGUI.getTextFields().get("email").getText(), 
                     accountGUI.getTextFields().get("password").getText());
@@ -25,10 +28,31 @@ class GUIController implements ActionListener{
         
     }
 
+    /**
+     * send inputted account info to AccountSystem
+     */
     public void signup() {
+        // public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
+        String name = signupGUI.getTextFields().get("name").getText();
+        String password = signupGUI.getTextFields().get("password").getText();
+        String city = signupGUI.getTextFields().get("city").getText();
+        int cardNo = Integer.parseInt(signupGUI.getTextFields().get("cardNo").getText());
+        int CVV = Integer.parseInt(signupGUI.getTextFields().get("cvv").getText());
+        String expDate = signupGUI.getTextFields().get("expDate").getText();
+        String nameOnCard = signupGUI.getTextFields().get("nameOnCard").getText();
 
+        if(model.signup(name, password, city, cardNo, CVV, expDate, nameOnCard) {
+            signupGUI.setVisible(false);
+            accountGUI.setVisible(true);
+        }
+        else {
+            signupGUI.displayAccountExists();
+        }
     }
 
+    /**
+     * defines button functionality and switches GUI pages as needed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == accountGUI.getButtons().get("login")) {
@@ -38,8 +62,13 @@ class GUIController implements ActionListener{
             accountGUI.setVisible(false);
             signupGUI.setVisible(true);
         }
-        //else if(e.getSource == )
-
+        else if(e.getSource() == signupGUI.getButtons().get("signup"))
+            signup();
+        else if (e.getSource() == signupGUI.getButtons().get("login")) {
+            signupGUI.setVisible(false);
+            accountGUI.setVisible(true);
+        }
+        
 
     }
 }
