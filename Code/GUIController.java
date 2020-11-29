@@ -16,7 +16,34 @@ class GUIController{
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();
+        });
+        signupGUI.addLoginListener((ActionEvent event) -> {
+            signupGUI.setVisible(false);
+            loginGUI.setVisible(true);
+        });
+        
+        loginGUI.addLoginListener((ActionEvent event) -> {
+			login();
+        });
+        loginGUI.addSignUpListener((ActionEvent event) -> {
+            loginGUI.setVisible(false);
+			signupGUI.setVisible(true);
+        });
+        
+        menuGUI.addInfoListener((ActionEvent event) -> {
+			/* todo */
+        });
+        menuGUI.addLoginListener((ActionEvent event) -> {
+			signupGUI.setVisible(false);
+            loginGUI.setVisible(true);
 		});
+        menuGUI.addVoucherListener((ActionEvent event) -> {
+			/* todo */
+        });
+        menuGUI.addPurchaseListener((ActionEvent event) -> {
+			/* todo */
+        });
+        
 
     }
 
