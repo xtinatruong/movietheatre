@@ -8,10 +8,11 @@ class GUIController{
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
 
-    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui) {
         this.model = as;
         this.loginGUI = gui;
         this.signupGUI = sgui;
+        this.menuGUI = mgui;
         signupGUI.setVisible(false);
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
