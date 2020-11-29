@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 public class MenuGUI extends JFrame {
 
+	private GUIController trs;
 	private JPanel contentPane;
 	private JTable movieTable;
 
@@ -83,7 +84,7 @@ public class MenuGUI extends JFrame {
 		loginPanel.setBounds(10, 11, 134, 27);
 		bluePanel.add(loginPanel);
 
-		JLabel regUserLabel = new JLabel("Registered User?");
+		JLabel regUserLabel = new JLabel(trs.getUserName());
 		regUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		regUserLabel.setForeground(new Color(255, 255, 255));
 		regUserLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 10));
@@ -198,5 +199,9 @@ public class MenuGUI extends JFrame {
 	public void addPurchaseListener(ActionListener purchaseListener)
 	{
 		btnPurchasedTickets.addActionListener(purchaseListener);
+	}
+
+	public void setTRS(GUIController trs) {
+		this.trs = trs;
 	}
 }

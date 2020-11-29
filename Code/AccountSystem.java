@@ -326,7 +326,7 @@ public class AccountSystem implements Database {
      * return a RegisteredUser object with the fields:
      * {showId, number, availability}
      */
-    public static HashMap<String, String> getUserInfo(String userId) {
+    public static RegisteredUser getUserInfo(String userId) {
         try {
             String sql = "select * from User where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
