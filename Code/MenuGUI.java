@@ -14,6 +14,8 @@ import javax.swing.JTable;
 import java.awt.Choice;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class MenuGUI extends JFrame {
 
@@ -28,6 +30,8 @@ public class MenuGUI extends JFrame {
 	JButton accountInfoButton = new JButton("Account");
 	JButton btnPurchasedTickets = new JButton("Purchased Tickets");
 	String userName = "Guest";
+	private JTextField screenField;
+	private JTable seatTable;
 
 	/**
 	 * Launch the application.
@@ -179,11 +183,21 @@ public class MenuGUI extends JFrame {
 		chooseSeatsLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		chooseSeatsLabel.setBounds(59, 391, 153, 27);
 		whitePanel.add(chooseSeatsLabel);
-
-		JLabel seatMapLabel = new JLabel("");
-		seatMapLabel.setBounds(59, 424, 669, 318);
-		seatMapLabel.setIcon(new ImageIcon(seatMapIcon));
-		whitePanel.add(seatMapLabel);
+		
+		screenField = new JTextField();
+		screenField.setHorizontalAlignment(SwingConstants.CENTER);
+		screenField.setForeground(Color.WHITE);
+		screenField.setText("SCREEN");
+		screenField.setEditable(false);
+		screenField.setBackground(Color.BLACK);
+		screenField.setBounds(215, 419, 350, 27);
+		whitePanel.add(screenField);
+		screenField.setColumns(10);
+		
+		seatTable = new JTable();
+		seatTable.setCellSelectionEnabled(true);
+		seatTable.setBounds(253, 523, 1, 1);
+		whitePanel.add(seatTable);
 	}
 
 	public void addVoucherListener(ActionListener voucherListener)
