@@ -297,28 +297,27 @@ public class AccountSystem implements Database {
 
     /**
      * return all seat of selected show
-     * return a Arraylist that contains HashMap with the fields:
+     * return a Arraylist that contains Seats with the fields:
      * {showId, number, availability}
      */
-    public static ArrayList getSeat(String showId) {
+    public static ArrayList<Seat> getSeat(String showId) {
         try {
-            String sql = "select * from Movie where showId=?";
+            String sql = "select * from Seat where showId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             ResultSet rs = pstmt.executeQuery();
-            ArrayList res = new ArrayList();
+            ArrayList<Seat> seats = new ArrayList<>();
             while (rs.next()) {
-                HashMap row = new HashMap();
-                row.put("showId", rs.getString("showId"));
-                row.put("number", rs.getString("number"));
-                row.put("availability", rs.getBoolean("availability"));
-                res.add(row);
+                String number = rs.getString("seatNumber");
+                boolean available = rs.getBoolean("availability");
+                Seat s = new Seat(showId, number, available);
+                seats.add(s);
             }
             pstmt.close();
-            return res;
+            return seats;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList();
+            return null;
         }
     }
 

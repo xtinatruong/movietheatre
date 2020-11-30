@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.Color; 
 import java.awt.EventQueue;
 import java.awt.Image;
 
@@ -8,7 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.*;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.Choice;
@@ -16,13 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 public class MenuGUI extends JFrame {
 
-	private GUIController trs;
 	private JPanel contentPane;
-	private JTable movieTable;
 	
+	private JTable movieTable;
+	private JTable seatTable;
 	private JLabel userNameLabel;
 	private Choice theatreChoice;
 	JButton btnDiscountVouchers = new JButton("Discount Vouchers");
@@ -31,7 +33,7 @@ public class MenuGUI extends JFrame {
 	JButton btnPurchasedTickets = new JButton("Purchased Tickets");
 	String userName = "Guest";
 	private JTextField screenField;
-	private JTable seatTable;
+	
 
 	/**
 	 * Launch the application.
@@ -55,7 +57,7 @@ public class MenuGUI extends JFrame {
 	public MenuGUI() {
 		// JFrame
 		setSize(1139, 830);
-		setTitle("Account Login");
+		setTitle("Cinema 480");
 		Image img = new ImageIcon(this.getClass().getResource("/film.png")).getImage();
 		setIconImage(img);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,7 +132,7 @@ public class MenuGUI extends JFrame {
 		accountInfoButton.setBackground(new Color(100, 149, 237));
 		accountInfoButton.setIcon(new ImageIcon(accountIcon));
 
-		// purchase ticket button
+		// purchased ticket button
 		btnPurchasedTickets.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPurchasedTickets.setBounds(28, 82, 212, 38);
 		accountButtonsPanel.add(btnPurchasedTickets);
@@ -159,6 +161,7 @@ public class MenuGUI extends JFrame {
 		movieTable = new JTable();
 		movieTable.setBackground(new Color(245, 245, 245));
 		movieTable.setBounds(59, 130, 669, 221);
+		movieTable.setRowSelectionAllowed(true);
 		whitePanel.add(movieTable);
 
 		theatreChoice = new Choice();
@@ -195,8 +198,14 @@ public class MenuGUI extends JFrame {
 		screenField.setColumns(10);
 		
 		seatTable = new JTable();
+		seatTable.setBackground(new Color(245, 245, 245));
+		seatTable.setBounds(59, 469, 669, 275);
+		seatTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+//		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); ***********not working
+//		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+//		seatTable.setDefaultRenderer(String.class, centerRenderer);
 		seatTable.setCellSelectionEnabled(true);
-		seatTable.setBounds(253, 523, 1, 1);
+		
 		whitePanel.add(seatTable);
 	}
 
@@ -223,6 +232,12 @@ public class MenuGUI extends JFrame {
 	public void addTheatreListener(ItemListener theatreListener) {
 		theatreChoice.addItemListener(theatreListener);
 	}
+	
+	public void addMovieListener(ListSelectionListener movieListener) {
+		movieTable.getSelectionModel().addListSelectionListener(movieListener);
+	}
+	
+	
 
 	public void setName(String name) {
 		userName = name;
@@ -239,5 +254,14 @@ public class MenuGUI extends JFrame {
 	
 	public void setMovieTable(DefaultTableModel mTable) {
 		movieTable.setModel(mTable);
+	}
+	
+	public String getMovie() {
+		String movie = movieTable.getValueAt(movieTable.getSelectedRow(), 0).toString();
+		return movie;
+	}
+	
+	public void setSeatTable(DefaultTableModel sTable) {
+		seatTable.setModel(sTable);
 	}
 }

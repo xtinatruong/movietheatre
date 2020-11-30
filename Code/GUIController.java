@@ -1,6 +1,9 @@
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.swing.event.*;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -12,6 +15,7 @@ class GUIController{
 
     private User user;
     private Theatre theatre; 
+    private Movie movie;
 
     public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui) {
     	
@@ -51,6 +55,15 @@ class GUIController{
         	}
         	getMovies(theatre.getID());
         });
+        
+        menuGUI.addMovieListener((ListSelectionEvent event) -> {
+        	for(Movie m : AccountSystem.getMovies(theatre.getID())) {
+        		if(m.getName().compareTo(menuGUI.getMovie()) == 0)
+        			movie = m;
+        	}
+        	getSeats(movie.getId());
+        });
+        
         menuGUI.addInfoListener((ActionEvent event) -> {
 			/* todo */
         });
@@ -119,7 +132,13 @@ class GUIController{
     }
 
     public void getMovies(String theatreId) {
-    	DefaultTableModel mTable = new DefaultTableModel();
+    	DefaultTableModel mTable = new DefaultTableModel() 
+    	{
+    	    public boolean isCellEditable(int row, int column)
+    	    {
+    	      return false;
+    	    }
+    	};
     	mTable.addColumn("Title");
     	mTable.addColumn("Time");
     	mTable.addColumn("Price");
@@ -127,6 +146,41 @@ class GUIController{
     		mTable.insertRow(0, new Object[] {m.getName(), m.getTime(), m.getPrice()});
     	
        	menuGUI.setMovieTable(mTable);
+    }
+    
+    public void getSeats(String movieId) {
+    	DefaultTableModel sTable = new DefaultTableModel()
+    	{
+    	    public boolean isCellEditable(int row, int column)
+    	    {
+    	      return false;
+    	    }
+    	};
+    	HashMap<Character, ArrayList<String>> seats = new HashMap<>();
+    	for(Seat s : AccountSystem.getSeat(movieId)) {
+    		if(seats.get(s.getNumber().charAt(0)) == null)
+    			seats.put(s.getNumber().charAt(0), new ArrayList<String>());
+    		seats.get(s.getNumber().charAt(0)).add(s.getNumber());	
+    	}
+    	
+    	int max = 0;
+    	for(HashMap.Entry<Character, ArrayList<String>> a : seats.entrySet()) {
+    		if(max < a.getValue().size())
+    			max = a.getValue().size();
+    	}
+    	
+    	for(int i = 0; i < max; i++) {
+    		sTable.addColumn(i);
+    	}
+    	
+    	char i = 'A';
+    	while(seats.get(i) != null) {
+    		sTable.addRow(seats.get(i).toArray());
+    		i++;
+    	}
+    	
+    	menuGUI.setSeatTable(sTable);
+    	
     }
     
     

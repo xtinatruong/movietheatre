@@ -50,7 +50,7 @@ public class SignUpGUI extends JFrame {
 		
 		//JFrame
 		setSize(1139, 830);
-		setTitle("Account Login");
+		setTitle("Cinema 480");
 		Image img = new ImageIcon(this.getClass().getResource("/film.png")).getImage(); 
 		setIconImage(img);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
