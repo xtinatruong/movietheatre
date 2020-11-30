@@ -5,5 +5,5 @@ public interface Database {
 
     //  Database credentials
     static final String USERNAME = "root";
-    static final String PASSWORD = "ensf409";
+    static final String PASSWORD = "12345678";
 }

@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.Choice;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 public class MenuGUI extends JFrame {
 
@@ -20,7 +22,7 @@ public class MenuGUI extends JFrame {
 	private JTable movieTable;
 	
 	private JLabel userNameLabel;
-
+	private Choice theatreChoice;
 	JButton btnDiscountVouchers = new JButton("Discount Vouchers");
 	JButton loginButton = new JButton("Log In");
 	JButton accountInfoButton = new JButton("Account");
@@ -155,7 +157,7 @@ public class MenuGUI extends JFrame {
 		movieTable.setBounds(59, 130, 669, 221);
 		whitePanel.add(movieTable);
 
-		Choice theatreChoice = new Choice();
+		theatreChoice = new Choice();
 		theatreChoice.setBackground(new Color(245, 245, 245));
 		theatreChoice.setBounds(280, 46, 227, 30);
 		whitePanel.add(theatreChoice);
@@ -203,9 +205,25 @@ public class MenuGUI extends JFrame {
 	{
 		btnPurchasedTickets.addActionListener(purchaseListener);
 	}
+	
+	public void addTheatreListener(ItemListener theatreListener) {
+		theatreChoice.addItemListener(theatreListener);
+	}
 
 	public void setName(String name) {
 		userName = name;
 		userNameLabel.setText(userName);
+	}
+	
+	public void addTheatre(String t) {
+		theatreChoice.add(t);
+	}
+	
+	public String getTheatre() {
+		return theatreChoice.getSelectedItem();
+	}
+	
+	public void setMovieTable(DefaultTableModel mTable) {
+		movieTable.setModel(mTable);
 	}
 }

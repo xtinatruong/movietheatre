@@ -2,6 +2,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.table.DefaultTableModel;
+
 class GUIController{
     private AccountSystem model;
     private LoginGUI loginGUI;
@@ -9,15 +11,22 @@ class GUIController{
     private MenuGUI menuGUI;
 
     private User user;
+    private Theatre theatre; 
 
     public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui) {
+    	
         this.model = as;
         this.loginGUI = gui;
         this.signupGUI = sgui;
         this.menuGUI = mgui;
+        
+        getTheatres();
+        
         menuGUI.setVisible(true);
         loginGUI.setVisible(false);
         signupGUI.setVisible(false);
+        
+        
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();
@@ -35,6 +44,13 @@ class GUIController{
 			signupGUI.setVisible(true);
         });
         
+        menuGUI.addTheatreListener((ItemEvent event) -> {
+        	for(Theatre t : AccountSystem.getTheatres()) {
+        		if(t.getName().compareTo(menuGUI.getTheatre()) == 0)
+        			theatre = t;
+        	}
+        	getMovies(theatre.getID());
+        });
         menuGUI.addInfoListener((ActionEvent event) -> {
 			/* todo */
         });
@@ -61,7 +77,6 @@ class GUIController{
 
         user = AccountSystem.getUserInfo(id);
         menuGUI.setName(user.getName());
-        System.out.println(user.getName());
         if(id == null) {}
             //loginGUI.displayError();
         else {
@@ -96,70 +111,24 @@ class GUIController{
 
     }
 
-    public String getUserName() {
-    	//if(user != null)
-    		//return user.getName();
+    public void getTheatres() {
+    	menuGUI.addTheatre("");
+        for(Theatre t : AccountSystem.getTheatres()) {
+        	menuGUI.addTheatre(t.getName());
+        }
+    }
+
+    public void getMovies(String theatreId) {
+    	DefaultTableModel mTable = new DefaultTableModel();
+    	mTable.addColumn("Title");
+    	mTable.addColumn("Time");
+    	mTable.addColumn("Price");
+    	for(Movie m : AccountSystem.getMovies(theatreId))
+    		mTable.insertRow(0, new Object[] {m.getName(), m.getTime(), m.getPrice()});
     	
-    	return "Guest";
+       	menuGUI.setMovieTable(mTable);
     }
     
-    // public void selectTheatre() {
-    //     ArrayList<Theatre> theatres = AccountSystem.getTheatres();
-    //     int i = 0;
-    //     String list = "";
-    //     for (Theatre t : theatres) {
-    //         list += "Selection: " + i + "\nTheatre Name: " + t.getName() +
-    //                 "\nCity: " + t.getCity();
-    //         list += "\n*****************************\n";
-    //         menuGUI.sendTheatres(list);
-    //         i++;
-    //     }
-    // }
-
-    public ArrayList<Theatre>  getTheatres() {
-        return AccountSystem.getTheatres();
-    }
-
-    public ArrayList<Movie> getMovies(String theatreId) {
-        return AccountSystem.getMovies(theatreId);
-    }
-
-    /**
-     * defines button functionality and switches GUI pages as needed
-     */
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//        // login page functionality 
-//        if(e.getSource() == loginGUI.getButtons().get("login")) {
-//            login();
-//        }
-//        else if (e.getSource() == loginGUI.getButtons().get("signup")) {
-//        	signupGUI = new SignUpGUI();
-//        	System.out.println("button pressed");
-//        }
-//
-//        // signup page functionality 
-//        else if(e.getSource() == signupGUI.getButtons().get("signup"))
-//        {
-//        	System.out.println("Please work");
-//            signup();
-//        }
-//        else if (e.getSource() == signupGUI.getButtons().get("login")) {
-//            signupGUI.setVisible(false);
-//            loginGUI.setVisible(true);
-//        }
-//
-////        else if(e.getSource() == menGUI.getButtons().get("login")) {
-////            menuGUI.setVisible(true);
-////            loginGUI.setVisible(true);
-////        }
-////
-////        // main page functionality
-////        else if(e.getSource() == menuGUI.getButtons().get("selectTheatre")) {
-////            int tChoice = menuGUI.getTable().get("theatre").getSelectedRow();
-////            int mChoice = menuGUI.getTable().get("movie").getSelectedRow();
-////        }
-//    }
+    
 
 }

@@ -81,7 +81,7 @@ public class AccountSystem implements Database {
             pstmt.setString(9, nameOnCard);
             LocalDate t = LocalDate.now();
             pstmt.setString(10, (new Date(t.getYear() + 1, t.getMonthValue(), t.getDayOfMonth())).toString());
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
             pstmt.close();
             return true;
         } catch (SQLException e) {
@@ -253,7 +253,7 @@ public class AccountSystem implements Database {
             while (rs.next()) {
                 Theatre t = new Theatre();
                 t.setName(rs.getString("name"));
-                t.setID(rs.getInt("id"));
+                t.setID(rs.getString("id"));
                 t.setCity(rs.getString("city"));
                 theatres.add(t);
             }
@@ -280,9 +280,10 @@ public class AccountSystem implements Database {
             while (rs.next()) {
                 Movie m = new Movie();
                 m.setName(rs.getString("name"));
-                m.setId(rs.getInt("id"));
-                m.setTheatreId(rs.getInt("theatreId"));
+                m.setId(rs.getString("id"));
+                m.setTheatreId(rs.getString("theatreId"));
                 m.setTime(rs.getString("time"));
+                m.setPrice(rs.getDouble("price"));
 
                 movies.add(m);
             }

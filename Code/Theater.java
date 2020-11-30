@@ -4,7 +4,7 @@ import java.util.Vector;
 class Theatre{
 	private String city;
 	private String name;
-	private int id;
+	private String id;
 	public String getCity() {
 		return city;
 	}
@@ -18,10 +18,10 @@ class Theatre{
 		this.name = name;
 	}
 
-	public int getID() {
+	public String getID() {
 		return id;
 	}
-	public void setID(int id) {
+	public void setID(String id) {
 		this.id = id;
 	}
 	

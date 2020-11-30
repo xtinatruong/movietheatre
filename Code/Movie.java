@@ -2,9 +2,10 @@ import java.time.LocalTime;
 
 public class Movie {
     private String name;
-    private int id;
-    private int theatreId;
+    private String id;
+    private String theatreId;
     private String time;
+    private double price;
 
     public String getName() {
         return name;
@@ -18,25 +19,33 @@ public class Movie {
         this.time = time;
     }
 
-    public int getTheatreId() {
+    public String getTheatreId() {
         return theatreId;
     }
 
-    public void setTheatreId(int theatreId) {
+    public void setTheatreId(String theatreId) {
         this.theatreId = theatreId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
     
 }
