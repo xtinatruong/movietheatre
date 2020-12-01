@@ -163,6 +163,9 @@ class GUIController{
     	try {
 	    	if(user != null) {
 	    		fi.verfiyPayementMethod(Integer.parseInt(user.getCardNo()), user.getCvv(), user.getExpDate(), user.getNameOnCard());
+	    		
+	    		model.reserveTicket(user.getId(), "", "");
+	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	}
 	    	else {
@@ -170,12 +173,14 @@ class GUIController{
 	    		int cvv = Integer.parseInt(tGUI.getTextFields().get("cvv").getText());
 	    		String expD = tGUI.getTextFields().get("expDate").getText();
 	    		String noc = tGUI.getTextFields().get("nameOnCard").getText();
-	    		
 	    		fi.verfiyPayementMethod(cardNo, cvv, expD, noc);
+	    		
+	    		model.reserveTicket("GUEST", "", "");
+	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	} 
 	    	
-	    	model.reserveTicket()
+	    	
 	    	
     		
     	} 
