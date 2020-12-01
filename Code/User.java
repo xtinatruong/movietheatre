@@ -1,7 +1,7 @@
 public class User {
-    private String name;
-    private String city;
-    private String id;
+    protected String name;
+    protected String city;
+    protected String id;
 
     public User(String name, String city, String id) {
         this.name = name;
@@ -47,5 +47,13 @@ public class User {
     public void setCity(String city)
     {
         this.city = city;
+    }
+    
+    public String toString()
+    {
+    	String res = "";
+    	res += "Name: " + name;
+    	res += "\nCity: " + city;
+    	return res;
     }
 }

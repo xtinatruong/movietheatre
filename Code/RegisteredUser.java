@@ -67,4 +67,17 @@ class RegisteredUser extends User {
         this.email = email;
     }
     
+    @Override
+    public String toString()
+    {
+    	String res = "";
+    	res += "Name: " + super.name;
+    	res += "\nCity: " + super.city;
+    	res += "\nCard Number: " + cardNo;
+    	res += "\nCVV: " + cvv;
+    	res += "\nExp. Date: " + expDate;
+    	res += "\nName on Card: " + nameOnCard;
+    	return res;
+    }
+    
 }

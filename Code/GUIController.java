@@ -67,6 +67,7 @@ class GUIController{
         
         menuGUI.addInfoListener((ActionEvent event) -> {
 			menuGUI.setVisible(false);
+			getAccountInfo();
 			aGUI.setVisible(true);
         });
         menuGUI.addLoginListener((ActionEvent event) -> {
@@ -129,6 +130,15 @@ class GUIController{
             //signupGUI.displayError();
         }
 
+    }
+    
+    public void getAccountInfo() {
+    	String info = "You are not signed in!";
+    	if(user != null)
+    	{
+    		info = user.toString();
+    	}
+    	aGUI.setInfo(info);
     }
 
     public void getTheatres() {
