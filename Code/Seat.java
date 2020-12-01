@@ -20,7 +20,7 @@ class Seat {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public boolean isAvailability() {
+	public boolean getAvailability() {
 		return availability;
 	}
 	public void setAvailability(boolean availability) {

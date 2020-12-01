@@ -143,7 +143,7 @@ public class MenuGUI extends JFrame {
 		btnPurchasedTickets.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnPurchasedTickets.setBorder(null);
 		btnPurchasedTickets.setBackground(new Color(100, 149, 237));
-		btnPurchasedTickets.setIcon(new ImageIcon(ticketIcon));
+		btnPurchasedTickets.setIcon(new ImageIcon(discountIcon));
 		
 		// purchase discount button
 		btnCheckout.setBounds(50, 671, 212, 38);
@@ -153,7 +153,7 @@ public class MenuGUI extends JFrame {
 		btnCheckout.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnCheckout.setBorder(null);
 		btnCheckout.setBackground(new Color(100, 149, 237));
-		btnCheckout.setIcon(new ImageIcon(discountIcon));
+		btnCheckout.setIcon(new ImageIcon(shoppingIcon));
 
 		JPanel whitePanel = new JPanel();
 		whitePanel.setBackground(new Color(255, 255, 255));

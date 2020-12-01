@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class LoginGUI extends JFrame implements ActionListener{
 
     private JPanel contentPane;
-    private GUIController controller;
+    //private GUIController controller;
     private HashMap <String, JTextField> textFields;
     private HashMap <String, JButton> buttons;
     
@@ -181,11 +181,6 @@ public class LoginGUI extends JFrame implements ActionListener{
 	{
 		signUpButton.addActionListener(listener);
 	}
-	
-    
-    public void setController(GUIController controller) {
-        this.controller = controller;
-    }
 
     public HashMap<String, JTextField> getTextFields() {
         return textFields;

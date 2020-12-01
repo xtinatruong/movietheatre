@@ -148,9 +148,14 @@ public class PopulateDatabase implements Database {
                     pstmt = conn.prepareStatement(sql3);
                     pstmt.setString(1, show1);
                     pstmt.setString(2, seatNumber);
-                    pstmt.setBoolean(3, true);
+                    double random = Math.random();
+                    if(random < 0.2)
+                    	pstmt.setBoolean(3, false);
+                    else
+                    	pstmt.setBoolean(3, true);
                     pstmt.executeUpdate(); // execute my query (i.e. sql)
                 }
+                
             }
             for (int i = 1; i <= 5; i++) {
                 for (char y = 'A'; y <= 'E'; y++) {
@@ -159,7 +164,11 @@ public class PopulateDatabase implements Database {
                     pstmt = conn.prepareStatement(sql3);
                     pstmt.setString(1, show2);
                     pstmt.setString(2, seatNumber);
-                    pstmt.setBoolean(3, true);
+                    double random = Math.random();
+                    if(random < 0.2)
+                    	pstmt.setBoolean(3, false);
+                    else
+                    	pstmt.setBoolean(3, true);
                     pstmt.executeUpdate(); // execute my query (i.e. sql)
                 }
             }

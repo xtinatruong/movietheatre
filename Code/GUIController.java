@@ -12,17 +12,20 @@ class GUIController{
     private LoginGUI loginGUI;
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
+    private AccountInfoGUI aGUI;
 
     private User user;
     private Theatre theatre; 
     private Movie movie;
 
-    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui) {
     	
         this.model = as;
         this.loginGUI = gui;
         this.signupGUI = sgui;
         this.menuGUI = mgui;
+        this.aGUI = agui;
+        
         
         getTheatres();
         
@@ -65,7 +68,8 @@ class GUIController{
         });
         
         menuGUI.addInfoListener((ActionEvent event) -> {
-			/* todo */
+			menuGUI.setVisible(false);
+			aGUI.setVisible(true);
         });
         menuGUI.addLoginListener((ActionEvent event) -> {
 			menuGUI.setVisible(false);
@@ -76,6 +80,11 @@ class GUIController{
         });
         menuGUI.addPurchaseListener((ActionEvent event) -> {
 			/* todo */
+        });
+        
+        aGUI.addReturnListener((ActionEvent event) -> {
+        	aGUI.setVisible(false);
+        	menuGUI.setVisible(true);
         });
         
 
@@ -160,7 +169,10 @@ class GUIController{
     	for(Seat s : AccountSystem.getSeat(movieId)) {
     		if(seats.get(s.getNumber().charAt(0)) == null)
     			seats.put(s.getNumber().charAt(0), new ArrayList<String>());
-    		seats.get(s.getNumber().charAt(0)).add(s.getNumber());	
+    		if(s.getAvailability())
+    			seats.get(s.getNumber().charAt(0)).add(s.getNumber());
+    		else
+    			seats.get(s.getNumber().charAt(0)).add("");
     	}
     	
     	int max = 0;
