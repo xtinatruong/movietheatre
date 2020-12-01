@@ -42,9 +42,9 @@ public class PopulateDatabase implements Database {
             pstmt.setString(5, "Calgary");
             pstmt.setInt(6, 12345678);
             pstmt.setInt(7, 111);
-            pstmt.setString(8, (new Date(2023, 5, 5)).toString());
+            pstmt.setString(8, "07/20");
             pstmt.setString(9, "User 1");
-            pstmt.setString(10, (new Date(2021, 5, 1)).toString());
+            pstmt.setString(10, "02/25"); // wrong year
             pstmt.executeUpdate(); // execute my query (i.e. sql)
 
             String sql4 = "insert into User(id, name, email, password, city, cardNo, CVV, expDate, nameOnCard, paymentDeadline) values(?,?,?,?,?,?,?,?,?,?)";
@@ -57,9 +57,9 @@ public class PopulateDatabase implements Database {
             pstmt.setString(5, "Calgary");
             pstmt.setInt(6, 87654321);
             pstmt.setInt(7, 222);
-            pstmt.setString(8, (new Date(2023, 6, 6)).toString());
+            pstmt.setString(8, "05/21");
             pstmt.setString(9, "User 2");
-            pstmt.setString(10, (new Date(2022, 6, 1)).toString());
+            pstmt.setString(10, "09/23");
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {
@@ -81,15 +81,15 @@ public class PopulateDatabase implements Database {
             pstmt = conn.prepareStatement(sql3);
             theatre1 = UUID.randomUUID().toString();
             pstmt.setString(1, theatre1);
-            pstmt.setString(2, "user1");
-            pstmt.setString(3, "user1@gmail.com");
+            pstmt.setString(2, "Chinook");
+            pstmt.setString(3, "Calgary");
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             String sql4 = "insert into Theatre(id, name, city) values(?,?,?)";
             pstmt = conn.prepareStatement(sql4);
             theatre2 = UUID.randomUUID().toString();
             pstmt.setString(1, theatre2);
-            pstmt.setString(2, "user1");
-            pstmt.setString(3, "user1@gmail.com");
+            pstmt.setString(2, "Crowfoot");
+            pstmt.setString(3, "Calgary");
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {
@@ -111,8 +111,8 @@ public class PopulateDatabase implements Database {
             pstmt = conn.prepareStatement(sql3);
             show1 = UUID.randomUUID().toString();
             pstmt.setString(1, show1);
-            pstmt.setString(2, "film1");
-            pstmt.setString(3, LocalDateTime.now().toString());
+            pstmt.setString(2, "The Wind Rises");
+            pstmt.setString(3, "Dec. 13, 2020 - 16:00");
             pstmt.setString(4, theatre1);
             pstmt.setInt(5, 20);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
@@ -120,8 +120,8 @@ public class PopulateDatabase implements Database {
             pstmt = conn.prepareStatement(sql4);
             show2 = UUID.randomUUID().toString();
             pstmt.setString(1, show2);
-            pstmt.setString(2, "film2");
-            pstmt.setString(3, LocalDateTime.now().toString());
+            pstmt.setString(2, "Papillon");
+            pstmt.setString(3,"Nov. 30, 2020 - 20:00");
             pstmt.setString(4, theatre2);
             pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
@@ -216,7 +216,7 @@ public class PopulateDatabase implements Database {
             pstmt = conn.prepareStatement(sql3);
             pstmt.setInt(1, 12345678);
             pstmt.setInt(2, 111);
-            pstmt.setString(3, (new Date(2023, 5, 5)).toString());
+            pstmt.setString(3, "07/20");
             pstmt.setString(4, "User 1");
             pstmt.setInt(5, 100);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
