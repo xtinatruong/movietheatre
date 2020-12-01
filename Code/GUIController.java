@@ -26,14 +26,12 @@ class GUIController{
         this.menuGUI = mgui;
         this.aGUI = agui;
         
-        
         getTheatres();
         
         menuGUI.setVisible(true);
         loginGUI.setVisible(false);
         signupGUI.setVisible(false);
-        
-        
+        aGUI.setVisible(false);
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();
