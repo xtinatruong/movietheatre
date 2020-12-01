@@ -6,21 +6,29 @@ public class FinancialInstitute
         this.name = name;
     }
 
-    public double verfiyPayementMethod(int cardNo, int CVV, String expDate, String nameOnCard)
+    public void verfiyPayementMethod(int cardNo, int CVV, String expDate, String nameOnCard) throws Exception
     {
-        return AccountSystem.verifyPayment(cardNo, CVV, expDate, nameOnCard);
+        if(AccountSystem.verifyPayment(cardNo, CVV, expDate, nameOnCard) == -1) {
+        	throw new Exception();
+        }
+        		
     }
 
     // Removes money from user's account based on "amount"
-    public void chargeUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount)
+    public void chargeUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount) throws Exception
     {
-        // implement when balance is added to card
+    	
+    	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, -amount)) {
+         	throw new Exception();
+         }
     }
 
     // Returns money to user's account based on "amount"
-    public void refundUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount)
+    public void refundUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount) throws Exception
     {
-        // implement when balance is added to card
+    	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, amount)) {
+         	throw new Exception();
+         }
     }
 
     public void setName(String name)

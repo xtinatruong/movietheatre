@@ -18,7 +18,10 @@ class TransactionGUI extends JFrame {
 	private JTextField cardNoTextField;
 	private JTextField cvvTextField;
 	private JTextField nameOnCardTextField;
-	private JLabel itemsPurchasedLabel;
+	private JTextArea ticketList;
+	private JPanel cardInfoPanel;
+	private JLabel lblPleaseFillOut;
+	private JLabel lblMissingRequiredFields;
 	
 	private JButton btnCheckout = new JButton("Purchase");
 
@@ -55,14 +58,14 @@ class TransactionGUI extends JFrame {
 		checkoutLabel.setBounds(104, 67, 260, 47);
 		whitePanel.add(checkoutLabel);
 		
-		JLabel lblPleaseFillOut = new JLabel("Please fill out all required fields");
+		lblPleaseFillOut = new JLabel("Please fill out all required fields");
 		lblPleaseFillOut.setForeground(new Color(128, 128, 128));
 		lblPleaseFillOut.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
 		lblPleaseFillOut.setBackground(Color.BLACK);
-		lblPleaseFillOut.setBounds(104, 136, 284, 25);
+		lblPleaseFillOut.setBounds(104, 136, 433, 25);
 		whitePanel.add(lblPleaseFillOut);
 		
-		JLabel lblMissingRequiredFields = new JLabel("**Missing required field(s)");
+		lblMissingRequiredFields = new JLabel("**Missing required field(s)");
 		lblMissingRequiredFields.setForeground(new Color(165, 42, 42));
 		lblMissingRequiredFields.setFont(new Font("Segoe UI Light", Font.BOLD, 15));
 		lblMissingRequiredFields.setBackground(Color.BLACK);
@@ -79,7 +82,7 @@ class TransactionGUI extends JFrame {
 		//btnCheckout.addActionListener(controller);
 		whitePanel.add(btnCheckout);
 		
-		JPanel cardInfoPanel = new JPanel();
+		cardInfoPanel = new JPanel();
 		cardInfoPanel.setBounds(542, 80, 284, 447);
 		whitePanel.add(cardInfoPanel);
 		cardInfoPanel.setLayout(null);
@@ -193,20 +196,16 @@ class TransactionGUI extends JFrame {
 		textFields.put("email", emailTextField);
 		emailTextField.setActionCommand("");
 		
-		JLabel tickets = new JLabel("Your Ticket(s)");
+		JLabel tickets = new JLabel("Your Ticket");
 		tickets.setBounds(220, 198, 133, 25);
 		whitePanel.add(tickets);
 		tickets.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
-		JPanel ticketsPanel = new JPanel();
-		ticketsPanel.setBackground(Color.WHITE);
-		ticketsPanel.setBounds(118, 239, 327, 291);
-		whitePanel.add(ticketsPanel);
-		
-		itemsPurchasedLabel = new JLabel();
-		itemsPurchasedLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		ticketsPanel.add(itemsPurchasedLabel);
-		itemsPurchasedLabel.setText("");
+		ticketList = new JTextArea();
+		ticketList.setEditable(false);
+		ticketList.setBounds(104, 237, 372, 290);
+		ticketList.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		whitePanel.add(ticketList);
 		
 	}
 	
@@ -223,7 +222,13 @@ class TransactionGUI extends JFrame {
 		return textFields;
 	}
 	
-	public void setTicketsPurchased(String tickets) {
-		itemsPurchasedLabel.setText(tickets);
+	public void setTicketPurchased(String tickets) {
+		ticketList.setText(tickets);
+	}
+	
+	public void showPaymentPanel(boolean b) {
+		cardInfoPanel.setVisible(b);
+		lblMissingRequiredFields.setVisible(b);
+		lblPleaseFillOut.setText("The card under your account will be automatically charged.");
 	}
 }

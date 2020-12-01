@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionListener;
@@ -212,9 +214,9 @@ public class MenuGUI extends JFrame {
 		whitePanel.add(seatTable);
 	}
 
-	public void addVoucherListener(ActionListener voucherListener)
+	public void addCheckoutListener(ActionListener checkoutListener)
 	{
-		btnCheckout.addActionListener(voucherListener);
+		btnCheckout.addActionListener(checkoutListener);
 	}
 
 	public void addLoginListener(ActionListener loginListener)
@@ -227,7 +229,7 @@ public class MenuGUI extends JFrame {
 		accountInfoButton.addActionListener(infoListener);
 	}
 
-	public void addPurchaseListener(ActionListener purchaseListener)
+	public void addPurchasedListener(ActionListener purchaseListener)
 	{
 		btnPurchasedTickets.addActionListener(purchaseListener);
 	}
@@ -267,4 +269,20 @@ public class MenuGUI extends JFrame {
 	public void setSeatTable(DefaultTableModel sTable) {
 		seatTable.setModel(sTable);
 	}
+	
+	public String getSeat() {
+		try {
+			int row = seatTable.getSelectedRow();
+			int col = seatTable.getSelectedColumn();
+			String seat = seatTable.getValueAt(row, col).toString();
+			return seat;
+		} catch (Exception e) {
+			return "No seats selected.";
+		}
+	}
+	
+	public void showMessage(String infoMessage)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "Cinema 480", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

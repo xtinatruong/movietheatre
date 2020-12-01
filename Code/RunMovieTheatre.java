@@ -11,7 +11,8 @@ public class RunMovieTheatre {
 					SignUpGUI signup = new SignUpGUI();
 					MenuGUI menu = new MenuGUI();
 					AccountInfoGUI account = new AccountInfoGUI();
-					GUIController controller = new GUIController(db, login, signup, menu, account);
+					TransactionGUI trans = new TransactionGUI();
+					GUIController controller = new GUIController(db, login, signup, menu, account, trans);
 			        
 			        signup.setController(controller);
 				} catch (Exception e) {

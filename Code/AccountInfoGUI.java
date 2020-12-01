@@ -77,6 +77,7 @@ public class AccountInfoGUI extends JFrame {
 		
 		accountInfoText = new JTextArea();
 		accountInfoText.setBounds(104, 154, 695, 353);
+		accountInfoText.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		accountInfoText.setEditable(false);
 		whitePanel.add(accountInfoText);
 	}

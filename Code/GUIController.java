@@ -13,18 +13,23 @@ class GUIController{
     private SignUpGUI signupGUI;
     private MenuGUI menuGUI;
     private AccountInfoGUI aGUI;
+    private TransactionGUI tGUI;
+    private FinancialInstitute fi;
 
-    private User user;
+    private RegisteredUser user;
     private Theatre theatre; 
     private Movie movie;
+    private Seat seat;
 
-    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui) {
+    	fi = new FinancialInstitute("CIBC");
     	
         this.model = as;
         this.loginGUI = gui;
         this.signupGUI = sgui;
         this.menuGUI = mgui;
         this.aGUI = agui;
+        this.tGUI = tgui;
         
         getTheatres();
         
@@ -32,6 +37,7 @@ class GUIController{
         loginGUI.setVisible(false);
         signupGUI.setVisible(false);
         aGUI.setVisible(false);
+        tGUI.setVisible(false);
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();
@@ -74,19 +80,31 @@ class GUIController{
 			menuGUI.setVisible(false);
             loginGUI.setVisible(true);
 		});
-        menuGUI.addVoucherListener((ActionEvent event) -> {
+        menuGUI.addCheckoutListener((ActionEvent event) -> {
+			menuGUI.setVisible(false);
+			tGUI.setTicketPurchased(menuGUI.getSeat());
+			if(user != null)
+        		tGUI.showPaymentPanel(false);
+        	else
+        		tGUI.showPaymentPanel(true);
+			tGUI.setVisible(true);
+			
+        });
+        menuGUI.addPurchasedListener((ActionEvent event) -> {
 			/* todo */
         });
-        menuGUI.addPurchaseListener((ActionEvent event) -> {
-			/* todo */
-        });
+        
         
         aGUI.addReturnListener((ActionEvent event) -> {
         	aGUI.setVisible(false);
         	menuGUI.setVisible(true);
         });
         
-
+        tGUI.addCheckoutListener((ActionEvent event) -> {
+        	tGUI.setVisible(false);
+        	menuGUI.setVisible(true);
+        	checkoutVerification();
+        });
     }
 
     /**
@@ -139,6 +157,31 @@ class GUIController{
     		info = user.toString();
     	}
     	aGUI.setInfo(info);
+    }
+    
+    public void checkoutVerification() {
+    	try {
+	    	if(user != null) {
+	    		fi.verfiyPayementMethod(Integer.parseInt(user.getCardNo()), user.getCvv(), user.getExpDate(), user.getNameOnCard());
+	    		menuGUI.showMessage("Purchase Confirmed!");
+	    	}
+	    	else {
+	    		int cardNo = Integer.parseInt(tGUI.getTextFields().get("cardNo").getText());
+	    		int cvv = Integer.parseInt(tGUI.getTextFields().get("cvv").getText());
+	    		String expD = tGUI.getTextFields().get("expDate").getText();
+	    		String noc = tGUI.getTextFields().get("nameOnCard").getText();
+	    		
+	    		fi.verfiyPayementMethod(cardNo, cvv, expD, noc);
+	    		menuGUI.showMessage("Purchase Confirmed!");
+	    	} 
+	    	
+	    	model.reserveTicket()
+	    	
+    		
+    	} 
+    	catch (Exception e) {
+    		menuGUI.showMessage("Your card was declined. Transaction failed.");
+    	}
     }
 
     public void getTheatres() {
