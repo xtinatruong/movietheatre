@@ -185,7 +185,7 @@ public class PopulateDatabase implements Database {
             String sql = "drop table if exists Ticket";
             PreparedStatement pstmt = conn.prepareStatement(sql); // construct a statement
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql2 = "create table Ticket (showId VARCHAR(255), seatNumber VARCHAR(255), userId VARCHAR(255))";
+            String sql2 = "create table Ticket (id VARCHAR(255), showId VARCHAR(255), movie VARCHAR(255), time VARCHAR(255), seatNumber VARCHAR(255), userId VARCHAR(255))";
             pstmt = conn.prepareStatement(sql2);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
