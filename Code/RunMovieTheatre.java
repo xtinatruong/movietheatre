@@ -12,7 +12,8 @@ public class RunMovieTheatre {
 					MenuGUI menu = new MenuGUI();
 					AccountInfoGUI account = new AccountInfoGUI();
 					TransactionGUI trans = new TransactionGUI();
-					GUIController controller = new GUIController(db, login, signup, menu, account, trans);
+					TicketGUI ticket = new TicketGUI();
+					GUIController controller = new GUIController(db, login, signup, menu, account, trans, ticket);
 			        
 			        signup.setController(controller);
 				} catch (Exception e) {

@@ -125,14 +125,14 @@ public class AccountSystem implements Database {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             pstmt.setString(2, seatNumber);
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
             //Add ticket to database
             String sql2 = "insert into Ticket (showId,userId,seatNumber) values(?,?,?)";
             pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1, showId);
             pstmt.setString(2, userId);
             pstmt.setString(3, seatNumber);
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
             pstmt.close();
             return true;
         } catch (SQLException e) {
@@ -316,6 +316,27 @@ public class AccountSystem implements Database {
             pstmt.close();
             return seats;
         } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static ArrayList<Ticket> getTickets(String userId) {
+    	try {
+    		String sql = "select * from Ticket where userId=?";
+    		PreparedStatement pstmt = conn.prepareStatement(sql);
+    		pstmt.setString(1, userId);
+    		ResultSet rs = pstmt.executeQuery();
+    		ArrayList<Ticket> tickets = new ArrayList<>();
+    		while(rs.next()) {
+    			String showId = rs.getString("showId");
+    			String number = rs.getString("seatNumber");
+    			Ticket t = new Ticket (showId, userId, number);
+    			tickets.add(t);
+    		}
+    		pstmt.close();
+    		return tickets;
+    	} catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

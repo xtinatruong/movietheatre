@@ -242,6 +242,10 @@ public class MenuGUI extends JFrame {
 		movieTable.getSelectionModel().addListSelectionListener(movieListener);
 	}
 	
+	public void addSeatListener(ListSelectionListener seatListener) {
+		seatTable.getSelectionModel().addListSelectionListener(seatListener);
+	}
+	
 	
 
 	public void setName(String name) {

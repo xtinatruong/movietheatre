@@ -14,6 +14,7 @@ class GUIController{
     private MenuGUI menuGUI;
     private AccountInfoGUI aGUI;
     private TransactionGUI tGUI;
+    private TicketGUI tickGUI;
     private FinancialInstitute fi;
 
     private RegisteredUser user;
@@ -21,7 +22,7 @@ class GUIController{
     private Movie movie;
     private Seat seat;
 
-    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui, TicketGUI tickgui) {
     	fi = new FinancialInstitute("CIBC");
     	
         this.model = as;
@@ -30,6 +31,7 @@ class GUIController{
         this.menuGUI = mgui;
         this.aGUI = agui;
         this.tGUI = tgui;
+        this.tickGUI = tickgui;
         
         getTheatres();
         
@@ -71,6 +73,12 @@ class GUIController{
         	getSeats(movie.getId());
         });
         
+        menuGUI.addSeatListener((ListSelectionEvent event) -> {
+        	seat = new Seat();
+        	seat.setNumber(menuGUI.getSeat());
+        	seat.setMovieId(movie.getId());
+        });
+        
         menuGUI.addInfoListener((ActionEvent event) -> {
 			menuGUI.setVisible(false);
 			getAccountInfo();
@@ -91,7 +99,9 @@ class GUIController{
 			
         });
         menuGUI.addPurchasedListener((ActionEvent event) -> {
-			/* todo */
+			menuGUI.setVisible(false);
+			getTickets();
+			tickGUI.setVisible(true);
         });
         
         
@@ -104,6 +114,11 @@ class GUIController{
         	tGUI.setVisible(false);
         	menuGUI.setVisible(true);
         	checkoutVerification();
+        });
+        
+        tickGUI.addReturnListener((ActionEvent event) -> {
+        	tickGUI.setVisible(false);
+        	menuGUI.setVisible(true);
         });
     }
 
@@ -164,7 +179,7 @@ class GUIController{
 	    	if(user != null) {
 	    		fi.verfiyPayementMethod(Integer.parseInt(user.getCardNo()), user.getCvv(), user.getExpDate(), user.getNameOnCard());
 	    		
-	    		model.reserveTicket(user.getId(), "", "");
+	    		model.reserveTicket(user.getId(), seat.getMovieId(), seat.getNumber());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	}
@@ -175,7 +190,7 @@ class GUIController{
 	    		String noc = tGUI.getTextFields().get("nameOnCard").getText();
 	    		fi.verfiyPayementMethod(cardNo, cvv, expD, noc);
 	    		
-	    		model.reserveTicket("GUEST", "", "");
+	    		model.reserveTicket("GUEST", seat.getMovieId(), seat.getNumber());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	} 
@@ -186,7 +201,19 @@ class GUIController{
     	} 
     	catch (Exception e) {
     		menuGUI.showMessage("Your card was declined. Transaction failed.");
+    		e.printStackTrace();
     	}
+    }
+    
+    public void getTickets() {
+    	String ticks= "You are not signed in.";
+    	if(user != null) {
+    		ticks = "";
+    		for(Ticket t : model.getTickets(user.getId())) {
+    			ticks += t.toString();
+    		}
+    	}
+    	tickGUI.setTickets(ticks);
     }
 
     public void getTheatres() {

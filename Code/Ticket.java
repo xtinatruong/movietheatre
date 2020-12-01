@@ -6,47 +6,42 @@ class Ticket{
 	private String seat;
 	
 	//I think we should include theatre here because users need to know which theatre
-	private Theatre theatre;
-	private String show;
+	private String userId;
+	private String showId;
+	private String seatNum;
 	
-	
-	/**
-	 * generate ticket and insert into database
-	 */
-	public Ticket generateTicket() {
-		//verify seat availability
-		//confirm transaction
-		//mark seat as booked
-		//Insert into Ticket(showtime, seat) database
-		//return string or json ticket object
-		return this;
+	public Ticket(String uid, String sid, String num) {
+		userId =uid;
+		showId = sid;
+		seatNum = num;
 	}
 	
-	public LocalDateTime getShowtime() {
-		return showtime;
+	public String getUserId() {
+		return userId;
 	}
-	public void setShowtime(LocalDateTime showtime) {
-		this.showtime = showtime;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getShowId() {
+		return showId;
+	}
+	public void setShowId(String showId) {
+		this.showId = showId;
+	}
+	public String getSeatNum() {
+		return seatNum;
+	}
+	public void setSeatNum(String seatNum) {
+		this.seatNum = seatNum;
 	}
 	
-	public String getSeat() {
-		return seat;
-	}
-	public void setSeat(String seat) {
-		this.seat = seat;
-	}
-
-	public Theatre getTheatre() {
-		return theatre;
-	}
-	public void setTheatre(Theatre theatre) {
-		this.theatre = theatre;
-	}
-	public String getShow() {
-		return show;
-	}
-	public void setShow(String show) {
-		this.show = show;
+	public String toString() {
+		String ticket = "";
+		ticket += "\nMovie: " + showId;
+		ticket += "\nShowtime: "; // ADD SHOWTIME !!! DB TABLE
+		ticket += "\nSeat: " + seatNum;
+		ticket += "\n";
+		return ticket;
 	}
 	
 }

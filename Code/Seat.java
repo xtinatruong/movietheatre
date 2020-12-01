@@ -3,6 +3,11 @@ class Seat {
 	private String number;
 	private boolean availability;
 	
+	public Seat() {
+		movieId = "";
+		number = "";
+		availability = false;
+	}
 	public Seat(String movieId, String number, boolean availability) {
 		this.movieId = movieId;
 		this.number = number;
