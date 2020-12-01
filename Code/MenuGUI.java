@@ -12,10 +12,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
+import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -27,7 +30,7 @@ public class MenuGUI extends JFrame {
 	private JTable seatTable;
 	private JLabel userNameLabel;
 	private Choice theatreChoice;
-	JButton btnDiscountVouchers = new JButton("Discount Vouchers");
+	JButton btnCheckout = new JButton("Checkout");
 	JButton loginButton = new JButton("Log In");
 	JButton accountInfoButton = new JButton("Account");
 	JButton btnPurchasedTickets = new JButton("Purchased Tickets");
@@ -141,16 +144,16 @@ public class MenuGUI extends JFrame {
 		btnPurchasedTickets.setBorder(null);
 		btnPurchasedTickets.setBackground(new Color(100, 149, 237));
 		btnPurchasedTickets.setIcon(new ImageIcon(ticketIcon));
-
+		
 		// purchase discount button
-		btnDiscountVouchers.setHorizontalAlignment(SwingConstants.LEFT);
-		btnDiscountVouchers.setBounds(28, 142, 212, 38);
-		accountButtonsPanel.add(btnDiscountVouchers);
-		btnDiscountVouchers.setForeground(Color.WHITE);
-		btnDiscountVouchers.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		btnDiscountVouchers.setBorder(null);
-		btnDiscountVouchers.setBackground(new Color(100, 149, 237));
-		btnDiscountVouchers.setIcon(new ImageIcon(discountIcon));
+		btnCheckout.setBounds(50, 671, 212, 38);
+		bluePanel.add(btnCheckout);	
+		btnCheckout.setHorizontalAlignment(SwingConstants.LEFT);
+		btnCheckout.setForeground(Color.WHITE);
+		btnCheckout.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		btnCheckout.setBorder(null);
+		btnCheckout.setBackground(new Color(100, 149, 237));
+		btnCheckout.setIcon(new ImageIcon(discountIcon));
 
 		JPanel whitePanel = new JPanel();
 		whitePanel.setBackground(new Color(255, 255, 255));
@@ -200,8 +203,8 @@ public class MenuGUI extends JFrame {
 		seatTable = new JTable();
 		seatTable.setBackground(new Color(245, 245, 245));
 		seatTable.setBounds(59, 469, 669, 275);
-		seatTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); ***********not working
+//		seatTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+//		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); 
 //		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
 //		seatTable.setDefaultRenderer(String.class, centerRenderer);
 		seatTable.setCellSelectionEnabled(true);
@@ -211,7 +214,7 @@ public class MenuGUI extends JFrame {
 
 	public void addVoucherListener(ActionListener voucherListener)
 	{
-		btnDiscountVouchers.addActionListener(voucherListener);
+		btnCheckout.addActionListener(voucherListener);
 	}
 
 	public void addLoginListener(ActionListener loginListener)
