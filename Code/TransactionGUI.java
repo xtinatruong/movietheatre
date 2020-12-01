@@ -86,10 +86,10 @@ class TransactionGUI extends JFrame {
 		emailTextField.setCaretColor(Color.BLACK);
 		emailTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		emailTextField.setBackground(Color.WHITE);
-		textFields.put("city", emailTextField);
+		textFields.put("email", emailTextField);
 		emailTextField.setActionCommand("");
 		
-		JLabel emailLabel = new JLabel("* City");
+		JLabel emailLabel = new JLabel("* Email");
 		emailLabel.setBounds(0, 77, 117, 25);
 		personInfoPanel.add(emailLabel);
 		emailLabel.setForeground(Color.BLACK);
