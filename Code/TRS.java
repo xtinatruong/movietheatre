@@ -33,6 +33,8 @@ public class TRS {
         this.tGUI = tgui;
         this.tickGUI = tickgui;
         this.cancelGUI = cgui;
+        
+        this.fi = new FinancialInstitute("CIBC", model);
     }
     
     /**
@@ -164,11 +166,11 @@ public class TRS {
     }
     
     public void getTickets(RegisteredUser user, Movie movie) {
-    	String ticks= "You are not ed in.";
+    	String ticks= "You are not signed in.";
     	if(user != null) {
     		ticks = "";
     		for(Ticket t : model.getTickets(user.getId())) {
-    			ticks += t.toString(movie);
+    			ticks += t.toString();
     		}
     	}
     	tickGUI.setTickets(ticks);
@@ -182,7 +184,6 @@ public class TRS {
     }
 
     public void getMovies(String theatreId, RegisteredUser user) {
-    	System.out.println(theatreId);
     	DefaultTableModel mTable = new DefaultTableModel() 
     	{
     	    public boolean isCellEditable(int row, int column)
@@ -192,14 +193,12 @@ public class TRS {
     	};
     	
     	if(theatreId.equals("")) {
-    		System.out.println("he");
     		menuGUI.setMovieTable(mTable);
     		mTable.getDataVector().removeAllElements();
     		mTable.fireTableDataChanged();
     		return;
     	}
     	
-    	System.out.println("ebfjw");
     	mTable.addColumn("Title");
     	mTable.addColumn("Time");
     	mTable.addColumn("Price");

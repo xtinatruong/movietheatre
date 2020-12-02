@@ -78,7 +78,7 @@ public class LoginGUI extends JFrame{
 		movieIconPanel.add(whiteFilmIconLabel);
 		whiteFilmIconLabel.setIcon(new ImageIcon(whiteFilmIcon));
 		
-		JLabel lblWelcomeTo = new JLabel("MOVIE THEATRE");
+		JLabel lblWelcomeTo = new JLabel("CINEMA 480");
 		lblWelcomeTo.setBounds(0, 177, 288, 54);
 		movieIconPanel.add(lblWelcomeTo);
 		lblWelcomeTo.setHorizontalAlignment(SwingConstants.CENTER);

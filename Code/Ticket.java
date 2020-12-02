@@ -40,7 +40,8 @@ class Ticket{
 		this.seatNum = seatNum;
 	}
 	
-	public String toString(Movie m) {
+	public String toString() {
+		Movie m = AccountSystem.getMovie(showId);
 		String ticket = "";
 		ticket += "\nMovie: " + movie;
 		ticket += "\nShowtime: " + showtime;

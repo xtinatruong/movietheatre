@@ -25,6 +25,7 @@ class TransactionGUI extends JFrame {
 	private JButton applyButton;
 	private JButton btnCheckout = new JButton("Purchase");
 	private JTextField couponTextField;
+	private JButton btnReturnMenu = new JButton("Return to Main Menu");
 
 	/**
 	 * Create the frame.
@@ -241,6 +242,14 @@ class TransactionGUI extends JFrame {
 		invalidCouponLabel.setFont(new Font("Segoe UI Light", Font.BOLD, 12));
 		invalidCouponLabel.setBackground(Color.BLACK);
 		
+		btnReturnMenu.setForeground(new Color(100, 149, 237));
+		btnReturnMenu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		btnReturnMenu.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
+		btnReturnMenu.setBackground(new Color(255, 255, 255));
+		btnReturnMenu.setBounds(304, 615, 288, 31);
+		buttons.put("menu", btnReturnMenu);
+		whitePanel.add(btnReturnMenu);
+		
 	}
 	
 	public void addCheckoutListener(ActionListener listener)
@@ -252,6 +261,11 @@ class TransactionGUI extends JFrame {
 	{
 		applyButton.addActionListener(listener);
 	}
+	public void addReturnListener(ActionListener listener) 
+	{
+		btnReturnMenu.addActionListener(listener);
+	}
+	
 
 	public HashMap<String, JButton> getButtons() {
 		return buttons;

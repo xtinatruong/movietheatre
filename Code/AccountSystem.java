@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class AccountSystem implements Database {
-    private  Connection conn;
+    private static  Connection conn;
 
     public AccountSystem() {
         initializeConnection();
@@ -294,7 +294,7 @@ public class AccountSystem implements Database {
      * return a Arraylist that contains HashMap with the fields:
      * {id, name, theatreId, time}
      */
-    public  ArrayList<Movie> getMovies(String theatreId) {
+    public ArrayList<Movie> getMovies(String theatreId) {
         try {
             String sql = "select * from Movie where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -324,7 +324,7 @@ public class AccountSystem implements Database {
      * @param showId
      * @return 
      */
-    public  Movie getMovie (String showId) {
+    public static Movie getMovie (String showId) {
         try {
             String sql = "select * from Movie where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);

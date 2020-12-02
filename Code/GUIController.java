@@ -36,7 +36,6 @@ class GUIController{
     public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, 
     					AccountInfoGUI agui, TransactionGUI tgui, TicketGUI tickgui, 
     					CancellationGUI cgui) {
-    	fi = new FinancialInstitute("CIBC", model);
     	
         this.model = as;
         this.loginGUI = gui;
@@ -159,9 +158,10 @@ class GUIController{
         // transaction gui action events
         tGUI.addCheckoutListener((ActionEvent event) -> {
         	tGUI.setVisible(false);
+        	trs.checkoutVerification(user, seat, movie);
         	menuGUI.reset();
         	menuGUI.setVisible(true);
-        	trs.checkoutVerification(user, seat, movie);
+        	
         });
         tGUI.addApplyListener((ActionEvent event) -> {
         	Voucher v = model.getVoucher(tGUI.getCoupon());
@@ -174,6 +174,11 @@ class GUIController{
         	trs.displayCheckoutInfo(movie, seat);
         	
         });
+        tGUI.addReturnListener((ActionEvent event) -> {
+        	tGUI.setVisible(false);
+        	menuGUI.reset();
+        	menuGUI.setVisible(true);
+         });
         
         // ticket gui action events
         tickGUI.addReturnListener((ActionEvent event) -> {
@@ -202,14 +207,18 @@ class GUIController{
         	
         });
         cancelGUI.addCancelListener((ActionEvent event) -> {
-        	cancelGUI.setVisible(false);
-        	menuGUI.reset();
-        	menuGUI.setVisible(true);
-        	
-        	if(trs.cancelTicket(ticket, user, movie))
-        		menuGUI.showMessage("Ticket successfully cancelled");
-        	else
-        		menuGUI.showMessage("This movie is within 72 hours. Ticket cannot be cancelled.");	
+        	try {
+ 	        	model.cancelTicket(user.getId(), movie.getId(), seat.getNumber());
+ 	        	if(model.cancelTicket(user.getId(), movie.getId(), seat.getNumber())) {
+
+ 	        		cancelGUI.setVisible(false);
+ 	        		menuGUI.setVisible(true);
+ 	        	}		 	        
+	        	menuGUI.showMessage("Ticket successfully cancelled");
+        	}
+        	catch (Exception e) {
+        		menuGUI.showMessage("Not all fields are filled.");
+        	}
         });
         cancelGUI.addReturnListener((ActionEvent event) -> {
         	cancelGUI.setVisible(false);

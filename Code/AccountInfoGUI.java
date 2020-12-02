@@ -14,7 +14,7 @@ public class AccountInfoGUI extends JFrame {
 	
 	private JTextArea accountInfoText;
 	
-	private JButton btnReturnMenu = new JButton("Back to Movies");
+	private JButton btnReturnMenu = new JButton("Return to Main Menu");
 
 	/**
 	 * Launch the application.
