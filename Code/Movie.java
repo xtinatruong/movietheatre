@@ -7,6 +7,21 @@ public class Movie {
     private String time;
     private double price;
 
+    public Movie () {
+    	name= "";
+    	id = "";
+    	theatreId = "";
+    	time = "";
+    	price = -1;
+    }
+    
+    public Movie(String id, String name, String time, String theatreId, double price) {
+    	this.id = id;
+    	this.name = name;
+    	this.time = time;
+    	this.theatreId = theatreId;
+    	this.price = price;
+    }
     public String getName() {
         return name;
     }

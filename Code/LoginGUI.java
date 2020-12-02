@@ -19,6 +19,7 @@ public class LoginGUI extends JFrame implements ActionListener{
     
     private JButton loginButton = new JButton("Login");
     private JButton signUpButton = new JButton("Sign Up");
+    private JButton guestButton;
 
 	/**
 	 * Launch the application.
@@ -161,7 +162,6 @@ public class LoginGUI extends JFrame implements ActionListener{
 		NewUserLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
 		
 		
-		
 		//SIGN UP BUTTON
 		signUpButton.setBorder(null);
 		signUpButton.setBackground(new Color(255, 255, 255));
@@ -170,6 +170,15 @@ public class LoginGUI extends JFrame implements ActionListener{
         //signUpButton.addActionListener(controller);
         buttons.put("signup", signUpButton);
 		signUpPanel.add(signUpButton);
+		
+		// GUEST BUTTON
+		guestButton = new JButton("Continue as Guest");
+		guestButton.setBorder(null);
+		guestButton.setBackground(new Color(255, 255, 255));
+		guestButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		guestButton.setBounds(132, 608, 288, 23);
+        buttons.put("guest", signUpButton);
+		whitePanel.add(guestButton);
 		
     }
 	
@@ -180,6 +189,10 @@ public class LoginGUI extends JFrame implements ActionListener{
 	public void addSignUpListener(ActionListener listener)
 	{
 		signUpButton.addActionListener(listener);
+	}
+	public void addGuestListener(ActionListener listener)
+	{
+		guestButton.addActionListener(listener);
 	}
 
     public HashMap<String, JTextField> getTextFields() {

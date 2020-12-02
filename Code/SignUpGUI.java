@@ -23,7 +23,7 @@ public class SignUpGUI extends JFrame {
 	private JTextField nameOnCardTextField;
 	
 	private JButton btnSignUp = new JButton("Sign Up");
-	private JButton btnLogInHere = new JButton("Log In here");
+	private JButton btnLogInHere = new JButton("Log In");
 
 	/**
 	 * Launch the application.

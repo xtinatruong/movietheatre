@@ -15,6 +15,7 @@ class GUIController{
     private AccountInfoGUI aGUI;
     private TransactionGUI tGUI;
     private TicketGUI tickGUI;
+    private CancellationGUI cancelGUI;
     private FinancialInstitute fi;
 
     private RegisteredUser user;
@@ -22,7 +23,7 @@ class GUIController{
     private Movie movie;
     private Seat seat;
 
-    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui, TicketGUI tickgui) {
+    public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui, TicketGUI tickgui, CancellationGUI cgui) {
     	fi = new FinancialInstitute("CIBC");
     	
         this.model = as;
@@ -32,6 +33,7 @@ class GUIController{
         this.aGUI = agui;
         this.tGUI = tgui;
         this.tickGUI = tickgui;
+        this.cancelGUI = cgui;
         
         getTheatres();
         
@@ -40,6 +42,8 @@ class GUIController{
         signupGUI.setVisible(false);
         aGUI.setVisible(false);
         tGUI.setVisible(false);
+        tickGUI.setVisible(false);
+        cancelGUI.setVisible(false);
         
         signupGUI.addSignUpListener((ActionEvent event) -> {
 			signup();
@@ -55,6 +59,10 @@ class GUIController{
         loginGUI.addSignUpListener((ActionEvent event) -> {
             loginGUI.setVisible(false);
 			signupGUI.setVisible(true);
+        });
+        loginGUI.addGuestListener((ActionEvent event) -> {
+        	loginGUI.setVisible(false);
+        	menuGUI.setVisible(true);
         });
         
         menuGUI.addTheatreListener((ItemEvent event) -> {
@@ -89,13 +97,25 @@ class GUIController{
             loginGUI.setVisible(true);
 		});
         menuGUI.addCheckoutListener((ActionEvent event) -> {
-			menuGUI.setVisible(false);
-			tGUI.setTicketPurchased(menuGUI.getSeat());
-			if(user != null)
-        		tGUI.showPaymentPanel(false);
-        	else
-        		tGUI.showPaymentPanel(true);
-			tGUI.setVisible(true);
+        	try {
+				menuGUI.setVisible(false);
+				
+				String res = "Movie: " + movie.getName();
+				res += "\nShowtime: " + movie.getTime();
+				res += "\nSeat: " + seat.getNumber();
+				res += "\nPrice: $" + movie.getPrice();
+				tGUI.setTicketPurchased(res);
+				
+				if(user != null)
+	        		tGUI.showPaymentPanel(false);
+	        	else
+	        		tGUI.showPaymentPanel(true);
+				tGUI.setVisible(true);
+        	}
+        	catch (Exception e) {
+        		menuGUI.setVisible(true);
+        		menuGUI.showMessage("No seat selected.");
+        	}
 			
         });
         menuGUI.addPurchasedListener((ActionEvent event) -> {
@@ -103,7 +123,7 @@ class GUIController{
 			getTickets();
 			tickGUI.setVisible(true);
         });
-        
+        	
         
         aGUI.addReturnListener((ActionEvent event) -> {
         	aGUI.setVisible(false);
@@ -120,24 +140,57 @@ class GUIController{
         	tickGUI.setVisible(false);
         	menuGUI.setVisible(true);
         });
+        tickGUI.addCancelListener((ActionEvent event) -> {
+        	tickGUI.setVisible(false);
+        	cancelGUI.setVisible(true);
+        });
+        
+        
+        cancelGUI.addSearchListener((ActionEvent event) -> {
+        	Ticket t = model.getTicket(cancelGUI.getTicketId());
+        	if(t != null)
+        		cancelGUI.setTicketFound("Ticket found!\n" + t.toString());
+        	else
+        		cancelGUI.setTicketFound("Ticket not found!\n");
+        	
+        });
+        cancelGUI.addCancelListener((ActionEvent event) -> {
+        	cancelGUI.setVisible(false);
+        	
+        	model.cancelTicket(user.getId(), movie.getId(), seat.getNumber());
+        	
+        	menuGUI.setVisible(true);
+        	menuGUI.showMessage("Ticket successfully cancelled");
+        });
+        cancelGUI.addReturnListener((ActionEvent event) -> {
+        	tickGUI.setVisible(false);
+        	menuGUI.setVisible(true);
+        });
+        
+        
+        
     }
 
     /**
      * verify login information inputted with AccountSystem
      */
     public void login() {
-        String id = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
+    	try {
+    		String id = AccountSystem.login(loginGUI.getTextFields().get("email").getText(), 
                     loginGUI.getTextFields().get("password").getText());
 
-        user = AccountSystem.getUserInfo(id);
-        menuGUI.setName(user.getName());
-        if(id == null) {}
+    		user = AccountSystem.getUserInfo(id);
+    		menuGUI.setName(user.getName());
+    		if(id == null) {}
             //loginGUI.displayError();
-        else {
-            loginGUI.setVisible(false);
-            menuGUI.setVisible(true);
-        }
-        
+    		else {
+    			loginGUI.setVisible(false);
+    			menuGUI.setVisible(true);
+    		}
+    	}
+    	catch (Exception e) {
+    		menuGUI.showMessage("Incorrect email or password.");
+    	}  
     }
 
     /**
@@ -145,24 +198,28 @@ class GUIController{
      * @return 
      */
     public void signup() {
-        // public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
-        String name = signupGUI.getTextFields().get("name").getText();
-        String email = signupGUI.getTextFields().get("email").getText();
-        String password = signupGUI.getTextFields().get("password").getText();
-        String city = signupGUI.getTextFields().get("city").getText();
-        int cardNo = Integer.parseInt(signupGUI.getTextFields().get("cardNo").getText());
-        int CVV = Integer.parseInt(signupGUI.getTextFields().get("cvv").getText());
-        String expDate = signupGUI.getTextFields().get("expDate").getText();
-        String nameOnCard = signupGUI.getTextFields().get("nameOnCard").getText();
-
-        if(model.signup(name, email, password, city, cardNo, CVV, expDate, nameOnCard)) {
-            signupGUI.setVisible(false);
-            loginGUI.setVisible(true);
-        }
-        else {
-            //signupGUI.displayError();
-        }
-
+    	try {
+        	// public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard)
+	        String name = signupGUI.getTextFields().get("name").getText();
+	        String email = signupGUI.getTextFields().get("email").getText();
+	        String password = signupGUI.getTextFields().get("password").getText();
+	        String city = signupGUI.getTextFields().get("city").getText();
+	        int cardNo = Integer.parseInt(signupGUI.getTextFields().get("cardNo").getText());
+	        int CVV = Integer.parseInt(signupGUI.getTextFields().get("cvv").getText());
+	        String expDate = signupGUI.getTextFields().get("expDate").getText();
+	        String nameOnCard = signupGUI.getTextFields().get("nameOnCard").getText();
+	
+	        if(model.signup(name, email, password, city, cardNo, CVV, expDate, nameOnCard)) {
+	            signupGUI.setVisible(false);
+	            loginGUI.setVisible(true);
+	        }
+	        else {
+	            //signupGUI.displayError();
+	        }
+    	}
+    	catch (Exception e) {
+    		menuGUI.showMessage("Not all fields are filled.");
+    	}
     }
     
     public void getAccountInfo() {
@@ -179,7 +236,7 @@ class GUIController{
 	    	if(user != null) {
 	    		fi.verfiyPayementMethod(Integer.parseInt(user.getCardNo()), user.getCvv(), user.getExpDate(), user.getNameOnCard());
 	    		
-	    		model.reserveTicket(user.getId(), seat.getMovieId(), seat.getNumber());
+	    		model.reserveTicket(user.getId(), seat.getMovieId(), seat.getNumber(), movie.getTime(), movie.getName());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	}
@@ -190,7 +247,7 @@ class GUIController{
 	    		String noc = tGUI.getTextFields().get("nameOnCard").getText();
 	    		fi.verfiyPayementMethod(cardNo, cvv, expD, noc);
 	    		
-	    		model.reserveTicket("GUEST", seat.getMovieId(), seat.getNumber());
+	    		model.reserveTicket("GUEST", seat.getMovieId(), seat.getNumber(), movie.getTime(), movie.getName());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	} 

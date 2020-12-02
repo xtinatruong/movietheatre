@@ -14,6 +14,7 @@ public class TicketGUI extends JFrame {
 	private JTextArea purchasedTickets;
 	
 	private JButton btnReturnMenu = new JButton("Back to Movies");
+	private JButton cancelButton;
 
 	/**
 	 * Launch the application.
@@ -79,11 +80,24 @@ public class TicketGUI extends JFrame {
 		buttons.put("menu", btnReturnMenu);
 		//btnSignUp.addActionListener(controller);
 		whitePanel.add(btnReturnMenu);
+		
+		// cancel button
+		cancelButton = new JButton("Cancel Ticket");
+		cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		cancelButton.setBorder(null);
+		cancelButton.setBackground(Color.WHITE);
+		cancelButton.setBounds(392, 586, 117, 29);
+		buttons.put("canel", cancelButton);
+		whitePanel.add(cancelButton);
 	}
 	
 	public void addReturnListener(ActionListener listener)
 	{
 		btnReturnMenu.addActionListener(listener);
+	}
+	
+	public void addCancelListener(ActionListener listener) {
+		cancelButton.addActionListener(listener);
 	}
 	
 	public void setTickets(String tickets) {

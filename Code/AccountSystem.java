@@ -118,7 +118,7 @@ public class AccountSystem implements Database {
     /**
      * Return true if successfully reserve ticket
      */
-    public static boolean reserveTicket(String userId, String showId, String seatNumber) {
+    public static boolean reserveTicket(String userId, String showId, String seatNumber, String showtime, String movie) {
         try {
             //Change seat availability
             String sql = "update Seat set availability=FALSE where showId=? and seatNumber=?";
@@ -127,11 +127,14 @@ public class AccountSystem implements Database {
             pstmt.setString(2, seatNumber);
             pstmt.executeUpdate();
             //Add ticket to database
-            String sql2 = "insert into Ticket (showId,userId,seatNumber) values(?,?,?)";
+            String sql2 = "insert into Ticket (id, showId, movie, time, seatNumber, userId) values(?,?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql2);
-            pstmt.setString(1, showId);
-            pstmt.setString(2, userId);
-            pstmt.setString(3, seatNumber);
+            pstmt.setString(1, UUID.randomUUID().toString());
+            pstmt.setString(2, showId);
+            pstmt.setString(3, movie);
+            pstmt.setString(4, showtime);
+            pstmt.setString(5, seatNumber);
+            pstmt.setString(6, userId);
             pstmt.executeUpdate();
             pstmt.close();
             return true;
@@ -294,6 +297,35 @@ public class AccountSystem implements Database {
             return null;
         }
     }
+    
+    /** 
+     * return Movie object from showId
+     * @param showId
+     * @return 
+     */
+    public static Movie getMovie (String showId) {
+        try {
+            String sql = "select * from Movie where id=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, showId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+            	String id = rs.getString("id");
+            	String name = rs.getString("name");
+            	String theatreId = rs.getString("theatreId");
+            	String time = rs.getString("time");
+            	double price = rs.getDouble("price");
+            	
+            	Movie m = new Movie(id, name, time, theatreId, price);
+            	pstmt.close();
+            	return m;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * return all seat of selected show
@@ -329,14 +361,47 @@ public class AccountSystem implements Database {
     		ResultSet rs = pstmt.executeQuery();
     		ArrayList<Ticket> tickets = new ArrayList<>();
     		while(rs.next()) {
+    			String id = rs.getString("id");
     			String showId = rs.getString("showId");
+    			System.out.println(showId);
     			String number = rs.getString("seatNumber");
-    			Ticket t = new Ticket (showId, userId, number);
+    			String showtime = rs.getString("time");
+    			String movie = rs.getString("movie");
+    			Ticket t = new Ticket (id, userId, showId, number, showtime, movie);
     			tickets.add(t);
     		}
     		pstmt.close();
     		return tickets;
     	} catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /** 
+     * return Ticket object from ticketId
+     * @param showId
+     * @return 
+     */
+    public static Ticket getTicket (String ticketId) {
+        try {
+            String sql = "select * from Ticket where id=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, ticketId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+            	String movie = rs.getString("movie");
+            	String showId = rs.getString("showId");
+            	String time = rs.getString("time");
+            	String seat = rs.getString("seatNumber");
+            	String uid = rs.getString("userId");
+            	
+            	Ticket t = new Ticket(ticketId, uid, showId, seat, time, movie);
+            	pstmt.close();
+            	return t;
+            }
+            return null;
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

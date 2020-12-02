@@ -2,18 +2,21 @@ import java.time.LocalDateTime;
 
 class Ticket{
 	
-	private LocalDateTime showtime;
-	private String seat;
-	
 	//I think we should include theatre here because users need to know which theatre
+	private String id;
 	private String userId;
 	private String showId;
 	private String seatNum;
+	private String showtime;
+	private String movie;
 	
-	public Ticket(String uid, String sid, String num) {
+	public Ticket(String id, String uid, String sid, String num, String st, String mov) {
+		this.id = id;
 		userId =uid;
 		showId = sid;
 		seatNum = num;
+		setShowtime(st);
+		setMovie(mov);
 	}
 	
 	public String getUserId() {
@@ -36,12 +39,31 @@ class Ticket{
 	}
 	
 	public String toString() {
+		Movie m = AccountSystem.getMovie(showId);
 		String ticket = "";
-		ticket += "\nMovie: " + showId;
-		ticket += "\nShowtime: "; // ADD SHOWTIME !!! DB TABLE
+		ticket += "\nMovie: " + movie;
+		ticket += "\nShowtime: " + showtime;
 		ticket += "\nSeat: " + seatNum;
+		ticket += "\nPrice: $" + m.getPrice();
+		ticket += "\nTicket ID: " + id;
 		ticket += "\n";
 		return ticket;
+	}
+
+	public String getShowtime() {
+		return showtime;
+	}
+
+	public void setShowtime(String showtime) {
+		this.showtime = showtime;
+	}
+
+	public String getMovie() {
+		return movie;
+	}
+
+	public void setMovie(String movie) {
+		this.movie = movie;
 	}
 	
 }
