@@ -100,19 +100,19 @@ public class MenuGUI extends JFrame {
 		loginPanel.setBounds(10, 11, 134, 27);
 		bluePanel.add(loginPanel);
 
-		JLabel regUserLabel = new JLabel("");
-		regUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		regUserLabel.setForeground(new Color(255, 255, 255));
-		regUserLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 10));
-		regUserLabel.setBounds(0, -1, 76, 27);
-		loginPanel.add(regUserLabel);
+//		JLabel regUserLabel = new JLabel("");
+//		regUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
+//		regUserLabel.setForeground(new Color(255, 255, 255));
+//		regUserLabel.setFont(new Font("Segoe UI Light", Font.PLAIN, 10));
+//		regUserLabel.setBounds(0, -1, 76, 27);
+//		loginPanel.add(regUserLabel);
 
 		loginButton.setHorizontalAlignment(SwingConstants.LEFT);
 		loginButton.setForeground(Color.WHITE);
 		loginButton.setFont(new Font("Segoe UI Black", Font.BOLD, 13));
 		loginButton.setBorder(null);
 		loginButton.setBackground(new Color(100, 149, 237));
-		loginButton.setBounds(81, 1, 53, 23);
+		loginButton.setBounds(0, 1, 53, 23);
 		loginPanel.add(loginButton);
 
 		// image icon for buttons

@@ -79,7 +79,7 @@ class TransactionGUI extends JFrame {
 		btnCheckout.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnCheckout.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		btnCheckout.setBackground(new Color(100, 149, 237));
-		btnCheckout.setBounds(304, 595, 288, 31);
+		btnCheckout.setBounds(304, 575, 288, 31);
 		buttons.put("checkout", btnCheckout);
 		//btnCheckout.addActionListener(controller);
 		whitePanel.add(btnCheckout);

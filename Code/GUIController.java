@@ -50,8 +50,8 @@ class GUIController{
         
         trs.getTheatres();
         
-        menuGUI.setVisible(true);
-        loginGUI.setVisible(false);
+        menuGUI.setVisible(false);
+        loginGUI.setVisible(true);
         signupGUI.setVisible(false);
         aGUI.setVisible(false);
         tGUI.setVisible(false);
