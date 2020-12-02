@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class AccountSystem implements Database {
-    private static Connection conn;
+    private  Connection conn;
 
     public AccountSystem() {
         initializeConnection();
@@ -14,7 +14,7 @@ public class AccountSystem implements Database {
     /**
      * Initialize the connection to server
      */
-    public static void initializeConnection() {
+    public  void initializeConnection() {
         try {
             // Register JDBC driver
             Driver driver = new com.mysql.cj.jdbc.Driver();
@@ -30,7 +30,7 @@ public class AccountSystem implements Database {
     /**
      * Close the connection to server
      */
-    public static void closeConnection() {
+    public  void closeConnection() {
         try {
             conn.close();
         } catch (SQLException e) {
@@ -42,7 +42,7 @@ public class AccountSystem implements Database {
     /**
      * Return a hashmap contains the user's id
      */
-    public static String login(String email, String password) {
+    public  String login(String email, String password) {
         String sql = "select id from User where email=? and password=?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -66,7 +66,7 @@ public class AccountSystem implements Database {
      /**
      * Return true if the account is successfully signed up
      */
-    public static boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
+    public  boolean signup(String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "insert into User(id, name, email, password, city, cardNo, CVV, expDate, nameOnCard, paymentDeadline) values(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class AccountSystem implements Database {
     /**
      * Return true if the user info is successfully updated
      */
-    public static boolean updateAccountInfo(String id, String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
+    public  boolean updateAccountInfo(String id, String name, String email, String password, String city, int cardNo, int CVV, String expDate, String nameOnCard) {
         String sql = "update User set name=?, email=?, password=?, city=?, cardNo=?, CVV=?, expDate=?, nameOnCard=? where id=?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -116,9 +116,9 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * Return true if successfully reserve ticket
+     * Return Ticket if successfully reserve ticket
      */
-    public static boolean reserveTicket(String userId, String showId, String seatNumber, String showtime, String movie) {
+    public Ticket reserveTicket(String userId, String showId, String seatNumber, String showtime, String movie) {
         try {
             //Change seat availability
             String sql = "update Seat set availability=FALSE where showId=? and seatNumber=?";
@@ -129,7 +129,8 @@ public class AccountSystem implements Database {
             //Add ticket to database
             String sql2 = "insert into Ticket (id, showId, movie, time, seatNumber, userId) values(?,?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql2);
-            pstmt.setString(1, UUID.randomUUID().toString());
+            String id = UUID.randomUUID().toString();
+            pstmt.setString(1, id);
             pstmt.setString(2, showId);
             pstmt.setString(3, movie);
             pstmt.setString(4, showtime);
@@ -137,17 +138,17 @@ public class AccountSystem implements Database {
             pstmt.setString(6, userId);
             pstmt.executeUpdate();
             pstmt.close();
-            return true;
+            return new Ticket(id, userId, showId, seatNumber, showtime, movie);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
     /**
      * Return true if successfully cancel ticket
      */
-    public static boolean cancelTicket(String userId, String showId, String seatNumber) {
+    public boolean cancelTicket(String userId, String showId, String seatNumber) {
         try {
             //Change seat availability
             String sql = "update Seat set availability=TRUE where showId=? and seatNumber=?";
@@ -173,7 +174,7 @@ public class AccountSystem implements Database {
     /**
      * Return true if the paymentDeadline is extended
      */
-    public static boolean payAnnualFee(String userId, String newDeadline) {
+    public  boolean payAnnualFee(String userId, String newDeadline) {
         try {
             String sql = "update User set paymentDeadline=? where userId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -191,7 +192,7 @@ public class AccountSystem implements Database {
     /**
      * Return true if the voucher is valid
      */
-    public static boolean isValid(String voucherId) {
+    public  boolean isValid(String voucherId) {
         try {
             String sql = "select * from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -211,7 +212,7 @@ public class AccountSystem implements Database {
     /**
      * return true if voucher validity is successfully changed
      */
-    public static boolean changeValidity(String voucherId) {
+    public  boolean changeValidity(String voucherId) {
         try {
             String sql = "delete from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -228,7 +229,7 @@ public class AccountSystem implements Database {
     /**
      * return Voucher if voucher is created for the user
      */
-    public static Voucher createVoucher(double value) {
+    public  Voucher createVoucher(double value) {
         try {
             String sql = "insert into Voucher (id,value) value(?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -250,7 +251,7 @@ public class AccountSystem implements Database {
      * @param id of voucher
      * @return
      */
-    public static void removeVoucher(String id) {   	
+    public  void removeVoucher(String id) {   	
         try {
             String sql = "delete from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -267,7 +268,7 @@ public class AccountSystem implements Database {
      * return an ArrayList of Theatre objects with the field:
      * {id, name, city}
      */
-    public static ArrayList<Theatre> getTheatres() {
+    public  ArrayList<Theatre> getTheatres() {
         try {
             String sql = "select * from Theatre";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -293,7 +294,7 @@ public class AccountSystem implements Database {
      * return a Arraylist that contains HashMap with the fields:
      * {id, name, theatreId, time}
      */
-    public static ArrayList<Movie> getMovies(String theatreId) {
+    public  ArrayList<Movie> getMovies(String theatreId) {
         try {
             String sql = "select * from Movie where theatreId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -323,7 +324,7 @@ public class AccountSystem implements Database {
      * @param showId
      * @return 
      */
-    public static Movie getMovie (String showId) {
+    public  Movie getMovie (String showId) {
         try {
             String sql = "select * from Movie where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -352,7 +353,7 @@ public class AccountSystem implements Database {
      * return a Arraylist that contains Seats with the fields:
      * {showId, number, availability}
      */
-    public static ArrayList<Seat> getSeat(String showId) {
+    public  ArrayList<Seat> getSeat(String showId) {
         try {
             String sql = "select * from Seat where showId=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -373,7 +374,7 @@ public class AccountSystem implements Database {
         }
     }
     
-    public static ArrayList<Ticket> getTickets(String userId) {
+    public  ArrayList<Ticket> getTickets(String userId) {
     	try {
     		String sql = "select * from Ticket where userId=?";
     		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -402,7 +403,7 @@ public class AccountSystem implements Database {
      * @param showId
      * @return 
      */
-    public static Ticket getTicket (String ticketId) {
+    public  Ticket getTicket (String ticketId) {
         try {
             String sql = "select * from Ticket where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -431,7 +432,7 @@ public class AccountSystem implements Database {
      * return a RegisteredUser object with the fields:
      * {showId, number, availability}
      */
-    public static RegisteredUser getUserInfo(String userId) {
+    public  RegisteredUser getUserInfo(String userId) {
         try {
             String sql = "select * from User where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -463,7 +464,7 @@ public class AccountSystem implements Database {
     /**
      * return the balance if payment method is verified
      */
-    public static double verifyPayment(String cardNo, int CVV, String expDate, String nameOnCard) {
+    public  double verifyPayment(String cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -485,7 +486,7 @@ public class AccountSystem implements Database {
     /**
      * return true if payment is verified
      */
-    public static boolean transaction(String cardNo, int CVV, String expDate, String nameOnCard, double price) {
+    public  boolean transaction(String cardNo, int CVV, String expDate, String nameOnCard, double price) {
         try {
             double balance = verifyPayment(cardNo, CVV, expDate, nameOnCard);
             if (balance < 0 || (balance + price) < 0) {
@@ -512,7 +513,7 @@ public class AccountSystem implements Database {
     /**
      * return all user's voucher id in an arrayList
      */
-    public static Voucher getVoucher(String id) {
+    public  Voucher getVoucher(String id) {
         try {
             String sql = "select * from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);

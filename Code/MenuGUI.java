@@ -296,4 +296,10 @@ public class MenuGUI extends JFrame {
     {
         JOptionPane.showMessageDialog(null, infoMessage, "Cinema 480", JOptionPane.INFORMATION_MESSAGE);
     }
+	
+	public void reset() {
+		theatreChoice.select(0);
+		setMovieTable(new DefaultTableModel());
+		setSeatTable(new DefaultTableModel());
+	}
 }

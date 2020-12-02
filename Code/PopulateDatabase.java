@@ -86,13 +86,6 @@ public class PopulateDatabase implements Database {
             pstmt.setString(2, "Chinook");
             pstmt.setString(3, "Calgary");
             pstmt.executeUpdate(); // execute my query (i.e. sql)
-            String sql4 = "insert into Theatre(id, name, city) values(?,?,?)";
-            pstmt = conn.prepareStatement(sql4);
-            theatre2 = UUID.randomUUID().toString();
-            pstmt.setString(1, theatre2);
-            pstmt.setString(2, "Crowfoot");
-            pstmt.setString(3, "Calgary");
-            pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -124,7 +117,7 @@ public class PopulateDatabase implements Database {
             pstmt.setString(1, show2);
             pstmt.setString(2, "Papillon");
             pstmt.setString(3,"12/30/2020 - 20:00");
-            pstmt.setString(4, theatre2);
+            pstmt.setString(4, theatre1);
             pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             String sql5 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";
@@ -133,7 +126,7 @@ public class PopulateDatabase implements Database {
             pstmt.setString(1, show3);
             pstmt.setString(2, "The New Mutants");
             pstmt.setString(3,"12/15/2020 - 14:00");
-            pstmt.setString(4, theatre2);
+            pstmt.setString(4, theatre1);
             pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
             String sql6 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";

@@ -1,14 +1,17 @@
 public class FinancialInstitute 
 {
     private String name;
-    public FinancialInstitute(String name) 
+    private AccountSystem model;
+    
+    public FinancialInstitute(String name, AccountSystem model) 
     {
         this.name = name;
+        this.model = model;
     }
 
     public void verfiyPayementMethod(String cardNo, int CVV, String expDate, String nameOnCard) throws Exception
     {
-        if(AccountSystem.verifyPayment(cardNo, CVV, expDate, nameOnCard) == -1) {
+        if(model.verifyPayment(cardNo, CVV, expDate, nameOnCard) == -1) {
         	throw new Exception();
         }
         		
@@ -18,7 +21,7 @@ public class FinancialInstitute
     public void chargeUser(String cardNo, int CVV, String expDate, String nameOnCard, double amount) throws Exception
     {
     	
-    	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, -amount)) {
+    	 if(!model.transaction(cardNo, CVV, expDate, nameOnCard, -amount)) {
          	throw new Exception();
          }
     }
@@ -26,7 +29,7 @@ public class FinancialInstitute
     // Returns money to user's account based on "amount"
     public void refundUser(String cardNo, int CVV, String expDate, String nameOnCard, double amount) throws Exception
     {
-    	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, amount)) {
+    	 if(!model.transaction(cardNo, CVV, expDate, nameOnCard, amount)) {
          	throw new Exception();
          }
     }

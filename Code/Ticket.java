@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 class Ticket{
@@ -38,8 +40,7 @@ class Ticket{
 		this.seatNum = seatNum;
 	}
 	
-	public String toString() {
-		Movie m = AccountSystem.getMovie(showId);
+	public String toString(Movie m) {
 		String ticket = "";
 		ticket += "\nMovie: " + movie;
 		ticket += "\nShowtime: " + showtime;
@@ -64,6 +65,18 @@ class Ticket{
 
 	public void setMovie(String movie) {
 		this.movie = movie;
+	}
+	
+	public void printReceipt(String email, String name) {
+		try {
+			FileWriter writer = new FileWriter(email + id + ".txt");
+			writer.write("Hello " + name + ", here is your ticket receipt.");
+			writer.write(toString());
+			writer.close();
+		 
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		}
 	}
 	
 }
