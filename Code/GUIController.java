@@ -137,7 +137,6 @@ class GUIController{
         });
         tGUI.addApplyListener((ActionEvent event) -> {
         	Voucher v = model.getVoucher(tGUI.getCoupon());
-        	System.out.println(model.getVoucher("31246532-d8b5-4e3c-8c93-d82b320b3326").getValue());
         	double newPrice = movie.getPrice() - v.getValue();
         	if(newPrice < 0)
         		newPrice = 0;

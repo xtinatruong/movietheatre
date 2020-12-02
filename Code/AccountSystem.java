@@ -496,7 +496,7 @@ public class AccountSystem implements Database {
      */
     public static Voucher getVoucher(String id) {
         try {
-            String sql = "select id from Voucher where id=?";
+            String sql = "select * from Voucher where id=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
