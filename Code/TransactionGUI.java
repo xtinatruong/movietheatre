@@ -8,7 +8,7 @@ import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
-class TransactionGUI extends JFrame {
+class TransactionGUI extends JFrame { 
 	private JPanel blueContentPane;
 	private HashMap<String, JTextField> textFields;
 	private HashMap<String, JButton> buttons;
