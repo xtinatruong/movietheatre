@@ -24,6 +24,7 @@ class TransactionGUI extends JFrame {
 	private JLabel lblMissingRequiredFields;
 	
 	private JButton btnCheckout = new JButton("Purchase");
+	private JTextField couponTextField;
 
 	/**
 	 * Create the frame.
@@ -55,21 +56,21 @@ class TransactionGUI extends JFrame {
 		JLabel checkoutLabel = new JLabel("CHECKOUT");
 		checkoutLabel.setForeground(new Color(100, 149, 237));
 		checkoutLabel.setFont(new Font("Verdana", Font.PLAIN, 30));
-		checkoutLabel.setBounds(104, 67, 260, 47);
+		checkoutLabel.setBounds(72, 79, 260, 47);
 		whitePanel.add(checkoutLabel);
 		
 		lblPleaseFillOut = new JLabel("Please fill out all required fields");
 		lblPleaseFillOut.setForeground(new Color(128, 128, 128));
 		lblPleaseFillOut.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
 		lblPleaseFillOut.setBackground(Color.BLACK);
-		lblPleaseFillOut.setBounds(104, 136, 433, 25);
+		lblPleaseFillOut.setBounds(72, 137, 433, 25);
 		whitePanel.add(lblPleaseFillOut);
 		
 		lblMissingRequiredFields = new JLabel("**Missing required field(s)");
 		lblMissingRequiredFields.setForeground(new Color(165, 42, 42));
 		lblMissingRequiredFields.setFont(new Font("Segoe UI Light", Font.BOLD, 15));
 		lblMissingRequiredFields.setBackground(Color.BLACK);
-		lblMissingRequiredFields.setBounds(105, 161, 284, 25);
+		lblMissingRequiredFields.setBounds(72, 161, 284, 25);
 		whitePanel.add(lblMissingRequiredFields);
 		
 		//PLEASE ADD EVENT LISTENER HERE SO THAT IT SUBMIT ALL TEXT FIELDS TO ACCOUNT DATABASE
@@ -77,7 +78,7 @@ class TransactionGUI extends JFrame {
 		btnCheckout.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnCheckout.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
 		btnCheckout.setBackground(new Color(100, 149, 237));
-		btnCheckout.setBounds(304, 571, 288, 31);
+		btnCheckout.setBounds(304, 595, 288, 31);
 		buttons.put("checkout", btnCheckout);
 		//btnCheckout.addActionListener(controller);
 		whitePanel.add(btnCheckout);
@@ -197,15 +198,48 @@ class TransactionGUI extends JFrame {
 		emailTextField.setActionCommand("");
 		
 		JLabel tickets = new JLabel("Your Ticket");
-		tickets.setBounds(220, 198, 133, 25);
+		tickets.setBounds(72, 197, 133, 25);
 		whitePanel.add(tickets);
-		tickets.setFont(new Font("Dialog", Font.PLAIN, 20));
+		tickets.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		
 		ticketList = new JTextArea();
+		ticketList.setBackground(new Color(248, 248, 255));
 		ticketList.setEditable(false);
-		ticketList.setBounds(104, 237, 372, 290);
+		ticketList.setBounds(72, 227, 404, 147);
 		ticketList.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		whitePanel.add(ticketList);
+		
+		JPanel addCouponCodePanel = new JPanel();
+		addCouponCodePanel.setBackground(new Color(255, 255, 255));
+		addCouponCodePanel.setBounds(72, 445, 404, 82);
+		whitePanel.add(addCouponCodePanel);
+		addCouponCodePanel.setLayout(null);
+		
+		JLabel label = new JLabel("Add coupon code");
+		label.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		label.setBounds(0, 0, 163, 25);
+		addCouponCodePanel.add(label);
+		
+		couponTextField = new JTextField();
+		couponTextField.setBounds(0, 57, 254, 25);
+		addCouponCodePanel.add(couponTextField);
+		couponTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
+		couponTextField.setColumns(10);
+		
+		JButton applyButton = new JButton("Apply");
+		applyButton.setBounds(264, 51, 140, 31);
+		addCouponCodePanel.add(applyButton);
+		applyButton.setForeground(Color.WHITE);
+		applyButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		applyButton.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(30, 144, 255)));
+		applyButton.setBackground(new Color(100, 149, 237));
+		
+		JLabel invalidCouponLabel = new JLabel("Invalid Coupon Code");
+		invalidCouponLabel.setBounds(0, 28, 284, 25);
+		addCouponCodePanel.add(invalidCouponLabel);
+		invalidCouponLabel.setForeground(new Color(165, 42, 42));
+		invalidCouponLabel.setFont(new Font("Segoe UI Light", Font.BOLD, 12));
+		invalidCouponLabel.setBackground(Color.BLACK);
 		
 	}
 	
