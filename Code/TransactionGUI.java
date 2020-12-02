@@ -22,7 +22,7 @@ class TransactionGUI extends JFrame {
 	private JPanel cardInfoPanel;
 	private JLabel lblPleaseFillOut;
 	private JLabel lblMissingRequiredFields;
-	
+	private JButton applyButton;
 	private JButton btnCheckout = new JButton("Purchase");
 	private JTextField couponTextField;
 
@@ -226,7 +226,7 @@ class TransactionGUI extends JFrame {
 		couponTextField.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		couponTextField.setColumns(10);
 		
-		JButton applyButton = new JButton("Apply");
+		applyButton = new JButton("Apply");
 		applyButton.setBounds(264, 51, 140, 31);
 		addCouponCodePanel.add(applyButton);
 		applyButton.setForeground(Color.WHITE);
@@ -247,6 +247,11 @@ class TransactionGUI extends JFrame {
 	{
 		btnCheckout.addActionListener(listener);
 	}
+	
+	public void addApplyListener(ActionListener listener)
+	{
+		applyButton.addActionListener(listener);
+	}
 
 	public HashMap<String, JButton> getButtons() {
 		return buttons;
@@ -254,6 +259,10 @@ class TransactionGUI extends JFrame {
 
 	public HashMap<String, JTextField> getTextFields() {
 		return textFields;
+	}
+	
+	public String getCoupon() {
+		return couponTextField.getText();
 	}
 	
 	public void setTicketPurchased(String tickets) {

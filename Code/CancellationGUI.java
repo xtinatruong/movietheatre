@@ -56,7 +56,7 @@ class CancellationGUI extends JFrame {
 		cancelLabel.setBounds(104, 67, 260, 47);
 		whitePanel.add(cancelLabel);
 		
-		lblPleaseFillOut = new JLabel("Please fill out all required fields");
+		lblPleaseFillOut = new JLabel("Please fill out all required field(s)");
 		lblPleaseFillOut.setForeground(new Color(128, 128, 128));
 		lblPleaseFillOut.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
 		lblPleaseFillOut.setBackground(Color.BLACK);
@@ -192,11 +192,26 @@ class CancellationGUI extends JFrame {
 		return ticketId.getText();
 	}
 	
+	public String getName() {
+		return fullNameTextField.getText(); 
+	}
+	
+	public String getEmail() {
+		return emailTextField.getName();
+	}
+	
 	public void setTicketFound(String ticket) {
 		ticketFound.setText(ticket);
 	}
 	
 	public void showNonRegisteredPanel(boolean b) {
 		nonRegisteredPanel.setVisible(b);
+	}
+	
+	public void reset() {
+		ticketId.setText("");
+		ticketFound.setText("");
+		fullNameTextField.setText("");
+		emailTextField.setText("");
 	}
 }

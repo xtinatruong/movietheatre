@@ -154,14 +154,14 @@ public class AccountSystem implements Database {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, showId);
             pstmt.setString(2, seatNumber);
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
             //Add ticket to database
             String sql2 = "delete from Ticket where showId=? and userId=? and seatNumber=?";
             pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1, showId);
             pstmt.setString(2, userId);
             pstmt.setString(3, seatNumber);
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
             pstmt.close();
             return true;
         } catch (SQLException e) {
@@ -226,20 +226,22 @@ public class AccountSystem implements Database {
     }
 
     /**
-     * return true if voucher is created for the user
+     * return Voucher if voucher is created for the user
      */
-    public static boolean createVoucher(String userId) {
+    public static Voucher createVoucher(double value) {
         try {
-            String sql = "insert into Voucher (id,userId) values(?,?)";
+            String sql = "insert into Voucher (id,value) value(?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, UUID.randomUUID().toString());
-            pstmt.setString(2, userId);
-            pstmt.executeQuery();
+            String id =  UUID.randomUUID().toString();
+            pstmt.setString(1,id);
+            pstmt.setDouble(2, value);
+            pstmt.executeUpdate();
             pstmt.close();
-            return true;
+            
+            return new Voucher(id,value);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -363,7 +365,6 @@ public class AccountSystem implements Database {
     		while(rs.next()) {
     			String id = rs.getString("id");
     			String showId = rs.getString("showId");
-    			System.out.println(showId);
     			String number = rs.getString("seatNumber");
     			String showtime = rs.getString("time");
     			String movie = rs.getString("movie");
@@ -493,22 +494,24 @@ public class AccountSystem implements Database {
     /**
      * return all user's voucher id in an arrayList
      */
-//    public static ArrayList<Voucher> getVoucher(String userId) {
-//        try {
-//            String sql = "select id from Voucher where userId=?";
-//            PreparedStatement pstmt = conn.prepareStatement(sql);
-//            pstmt.setString(1, userId);
-//            ResultSet rs = pstmt.executeQuery();
-//            ArrayList <Voucher> vouchers = new ArrayList<Voucher>();
-//            while (rs.next()) {
-//                Voucher v = new Voucher(rs.getInt("id"), true);
-//                vouchers.add(v);
-//            }
-//            pstmt.close();
-//            return vouchers;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public static Voucher getVoucher(String id) {
+        try {
+            String sql = "select id from Voucher where id=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            ArrayList <Voucher> vouchers = new ArrayList<Voucher>();
+            if (rs.next()) {
+                Voucher v = new Voucher(id, rs.getDouble("value"));
+                vouchers.add(v);
+                pstmt.close();
+                return v;
+            }
+            pstmt.close();
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

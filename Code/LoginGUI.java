@@ -10,7 +10,7 @@ import java.awt.Color;
 import javax.swing.border.MatteBorder;
 import java.util.HashMap;
 
-public class LoginGUI extends JFrame implements ActionListener{
+public class LoginGUI extends JFrame{
 
     private JPanel contentPane;
     //private GUIController controller;
@@ -201,14 +201,9 @@ public class LoginGUI extends JFrame implements ActionListener{
     public HashMap<String, JButton> getButtons() {
         return buttons;
     }
-    // public void addLoginListener(ActionListener alButton) {
-    //     componentMap.get("loginButton").addActionListener(alButton);
-    //}
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // if(e.getActionCommand().compareTo("login button") == 0) {
-            
-        // }
-
-    }
+    
+    public void reset() {
+		textFields.get("email").setText("");
+		textFields.get("password").setText("");
+	}
 }

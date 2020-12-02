@@ -22,6 +22,7 @@ class GUIController{
     private Theatre theatre; 
     private Movie movie;
     private Seat seat;
+    Ticket ticket;
 
     public GUIController(AccountSystem as, LoginGUI gui, SignUpGUI sgui, MenuGUI mgui, AccountInfoGUI agui, TransactionGUI tgui, TicketGUI tickgui, CancellationGUI cgui) {
     	fi = new FinancialInstitute("CIBC");
@@ -50,6 +51,7 @@ class GUIController{
         });
         signupGUI.addLoginListener((ActionEvent event) -> {
             signupGUI.setVisible(false);
+            loginGUI.reset();
             loginGUI.setVisible(true);
         });
         
@@ -94,17 +96,14 @@ class GUIController{
         });
         menuGUI.addLoginListener((ActionEvent event) -> {
 			menuGUI.setVisible(false);
+			loginGUI.reset();
             loginGUI.setVisible(true);
 		});
         menuGUI.addCheckoutListener((ActionEvent event) -> {
         	try {
 				menuGUI.setVisible(false);
 				
-				String res = "Movie: " + movie.getName();
-				res += "\nShowtime: " + movie.getTime();
-				res += "\nSeat: " + seat.getNumber();
-				res += "\nPrice: $" + movie.getPrice();
-				tGUI.setTicketPurchased(res);
+				displayCheckoutInfo(movie.getPrice());
 				
 				if(user != null)
 	        		tGUI.showPaymentPanel(false);
@@ -130,26 +129,45 @@ class GUIController{
         	menuGUI.setVisible(true);
         });
         
+        // transaction gui action events
         tGUI.addCheckoutListener((ActionEvent event) -> {
         	tGUI.setVisible(false);
         	menuGUI.setVisible(true);
         	checkoutVerification();
         });
+        tGUI.addApplyListener((ActionEvent event) -> {
+        	Voucher v = model.getVoucher(tGUI.getCoupon());
+        	System.out.println(model.getVoucher("31246532-d8b5-4e3c-8c93-d82b320b3326").getValue());
+        	double newPrice = movie.getPrice() - v.getValue();
+        	if(newPrice < 0)
+        		newPrice = 0;
+        	movie.setPrice(newPrice);
+        	
+        	displayCheckoutInfo(movie.getPrice());
+        	
+        });
         
+        // ticket gui action events
         tickGUI.addReturnListener((ActionEvent event) -> {
         	tickGUI.setVisible(false);
         	menuGUI.setVisible(true);
         });
         tickGUI.addCancelListener((ActionEvent event) -> {
         	tickGUI.setVisible(false);
+        	
+        	if(user != null)
+        		cancelGUI.showNonRegisteredPanel(false);
+        	cancelGUI.reset();
         	cancelGUI.setVisible(true);
         });
         
         
+        // cancel gui action events
         cancelGUI.addSearchListener((ActionEvent event) -> {
-        	Ticket t = model.getTicket(cancelGUI.getTicketId());
-        	if(t != null)
-        		cancelGUI.setTicketFound("Ticket found!\n" + t.toString());
+        	ticket = model.getTicket(cancelGUI.getTicketId());
+        	movie = model.getMovie(ticket.getShowId());
+        	if(ticket != null)
+        		cancelGUI.setTicketFound("Ticket found!\n" + ticket.toString());
         	else
         		cancelGUI.setTicketFound("Ticket not found!\n");
         	
@@ -157,13 +175,13 @@ class GUIController{
         cancelGUI.addCancelListener((ActionEvent event) -> {
         	cancelGUI.setVisible(false);
         	
-        	model.cancelTicket(user.getId(), movie.getId(), seat.getNumber());
+        	cancelTicket();
         	
         	menuGUI.setVisible(true);
         	menuGUI.showMessage("Ticket successfully cancelled");
         });
         cancelGUI.addReturnListener((ActionEvent event) -> {
-        	tickGUI.setVisible(false);
+        	cancelGUI.setVisible(false);
         	menuGUI.setVisible(true);
         });
         
@@ -260,6 +278,28 @@ class GUIController{
     		menuGUI.showMessage("Your card was declined. Transaction failed.");
     		e.printStackTrace();
     	}
+    }
+    
+    public void displayCheckoutInfo(double price) {
+    	String res = "Movie: " + movie.getName();
+		res += "\nShowtime: " + movie.getTime();
+		res += "\nSeat: " + seat.getNumber();
+		res += "\nPrice: $" + price;
+		tGUI.setTicketPurchased(res);
+    }
+    
+    public void cancelTicket() {
+    	model.cancelTicket(ticket.getUserId(), ticket.getShowId(), ticket.getSeatNum());
+    	Voucher v;
+    	if(user != null) {
+    		v = model.createVoucher(movie.getPrice());
+    		v.printReceipt(user.getEmail(), user.getName());
+    	}
+    	else {
+    		v = model.createVoucher(movie.getPrice()*0.85);
+    		v.printReceipt(cancelGUI.getEmail(), cancelGUI.getName());
+    	}
+    	
     }
     
     public void getTickets() {
