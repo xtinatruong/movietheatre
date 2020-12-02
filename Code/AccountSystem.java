@@ -244,6 +244,24 @@ public class AccountSystem implements Database {
             return null;
         }
     }
+    
+    /**
+     * removes voucher from database 
+     * @param id of voucher
+     * @return
+     */
+    public static void removeVoucher(String id) {   	
+        try {
+            String sql = "delete from Voucher where id=?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,id);
+            pstmt.executeUpdate();
+            pstmt.close();
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * return an ArrayList of Theatre objects with the field:
@@ -445,11 +463,11 @@ public class AccountSystem implements Database {
     /**
      * return the balance if payment method is verified
      */
-    public static double verifyPayment(int cardNo, int CVV, String expDate, String nameOnCard) {
+    public static double verifyPayment(String cardNo, int CVV, String expDate, String nameOnCard) {
         try {
             String sql = "select * from Card where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, cardNo);
+            pstmt.setString(1, cardNo);
             pstmt.setInt(2, CVV);
             pstmt.setString(3, expDate);
             pstmt.setString(4, nameOnCard);
@@ -467,7 +485,7 @@ public class AccountSystem implements Database {
     /**
      * return true if payment is verified
      */
-    public static boolean transaction(int cardNo, int CVV, String expDate, String nameOnCard, double price) {
+    public static boolean transaction(String cardNo, int CVV, String expDate, String nameOnCard, double price) {
         try {
             double balance = verifyPayment(cardNo, CVV, expDate, nameOnCard);
             if (balance < 0 || (balance + price) < 0) {
@@ -477,11 +495,11 @@ public class AccountSystem implements Database {
                 String sql2 = "update Card set balance=? where cardNo=? and CVV=? and expDate=? and nameOnCard=?";
                 PreparedStatement pstmt = conn.prepareStatement(sql2);
                 pstmt.setDouble(1, balance);
-                pstmt.setInt(2, cardNo);
+                pstmt.setString(2, cardNo);
                 pstmt.setInt(3, CVV);
                 pstmt.setString(4, expDate);
                 pstmt.setString(5, nameOnCard);
-                pstmt.executeQuery();
+                pstmt.executeUpdate();
                 pstmt.close();
                 return true;
             }
@@ -514,4 +532,6 @@ public class AccountSystem implements Database {
             return null;
         }
     }
+    
+    
 }

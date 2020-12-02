@@ -1,7 +1,13 @@
 import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.event.*;
 
@@ -141,6 +147,7 @@ class GUIController{
         	if(newPrice < 0)
         		newPrice = 0;
         	movie.setPrice(newPrice);
+        	model.removeVoucher(v.getId());
         	
         	displayCheckoutInfo(movie.getPrice());
         	
@@ -251,43 +258,48 @@ class GUIController{
     public void checkoutVerification() {
     	try {
 	    	if(user != null) {
-	    		fi.verfiyPayementMethod(Integer.parseInt(user.getCardNo()), user.getCvv(), user.getExpDate(), user.getNameOnCard());
-	    		
+	    		fi.verfiyPayementMethod(user.getCardNo(), user.getCvv(), user.getExpDate(), user.getNameOnCard());
+	    		fi.chargeUser(user.getCardNo(), user.getCvv(), user.getExpDate(), user.getNameOnCard(), movie.getPrice());
 	    		model.reserveTicket(user.getId(), seat.getMovieId(), seat.getNumber(), movie.getTime(), movie.getName());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	}
 	    	else {
-	    		int cardNo = Integer.parseInt(tGUI.getTextFields().get("cardNo").getText());
+	    		String cardNo =tGUI.getTextFields().get("cardNo").getText();
 	    		int cvv = Integer.parseInt(tGUI.getTextFields().get("cvv").getText());
 	    		String expD = tGUI.getTextFields().get("expDate").getText();
 	    		String noc = tGUI.getTextFields().get("nameOnCard").getText();
 	    		fi.verfiyPayementMethod(cardNo, cvv, expD, noc);
-	    		
+	    		fi.chargeUser(cardNo, cvv, expD, noc, movie.getPrice());
 	    		model.reserveTicket("GUEST", seat.getMovieId(), seat.getNumber(), movie.getTime(), movie.getName());
 	    		
 	    		menuGUI.showMessage("Purchase Confirmed!");
 	    	} 
-	    	
-	    	
-	    	
-    		
     	} 
     	catch (Exception e) {
     		menuGUI.showMessage("Your card was declined. Transaction failed.");
-    		e.printStackTrace();
     	}
     }
     
     public void displayCheckoutInfo(double price) {
+    	DecimalFormat df = new DecimalFormat();
+    	df.setMaximumFractionDigits(2);
+    	
     	String res = "Movie: " + movie.getName();
 		res += "\nShowtime: " + movie.getTime();
 		res += "\nSeat: " + seat.getNumber();
-		res += "\nPrice: $" + price;
+		res += "\nPrice: $" + df.format(price);
 		tGUI.setTicketPurchased(res);
     }
     
     public void cancelTicket() {
+    	Movie m = model.getMovie(ticket.getShowId());
+    	
+    	Date movDate = new Date(Integer.parseInt(date[2]) - 1900, Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
+		Date currDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		long diffInMillies = Math.abs(movDate.getTime() - currDate.getTime());
+	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+	    
     	model.cancelTicket(ticket.getUserId(), ticket.getShowId(), ticket.getSeatNum());
     	Voucher v;
     	if(user != null) {
@@ -330,8 +342,33 @@ class GUIController{
     	mTable.addColumn("Title");
     	mTable.addColumn("Time");
     	mTable.addColumn("Price");
-    	for(Movie m : AccountSystem.getMovies(theatreId))
+    	for(Movie m : AccountSystem.getMovies(theatreId)) {
+    		String [] date = m.getTime().split("/| |-");
+    		
+    		Date movDate = new Date(Integer.parseInt(date[2]) - 1900, Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
+    		Date currDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    		long diffInMillies = Math.abs(movDate.getTime() - currDate.getTime());
+    	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    	    
+    		if(diff >= 20) {
+    			if(user == null) 
+    				continue;
+    			
+    		double totalSeats = 0;
+    		double unavailSeats = 0;
+    		for(Seat s : model.getSeat(m.getId())) {
+    			totalSeats++;
+    			if(s.getAvailability() == false)
+    				unavailSeats++;
+    		}
+    		
+    		if(unavailSeats/totalSeats >= 0.10)
+    			continue;
+    		}
+    			
     		mTable.insertRow(0, new Object[] {m.getName(), m.getTime(), m.getPrice()});
+    				
+    	}
     	
        	menuGUI.setMovieTable(mTable);
     }
@@ -345,7 +382,7 @@ class GUIController{
     	    }
     	};
     	HashMap<Character, ArrayList<String>> seats = new HashMap<>();
-    	for(Seat s : AccountSystem.getSeat(movieId)) {
+    	for(Seat s : model.getSeat(movieId)) {
     		if(seats.get(s.getNumber().charAt(0)) == null)
     			seats.put(s.getNumber().charAt(0), new ArrayList<String>());
     		if(s.getAvailability())

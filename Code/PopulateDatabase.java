@@ -112,7 +112,7 @@ public class PopulateDatabase implements Database {
             show1 = UUID.randomUUID().toString();
             pstmt.setString(1, show1);
             pstmt.setString(2, "The Wind Rises");
-            pstmt.setString(3, "Dec. 13, 2020 - 16:00");
+            pstmt.setString(3, "12/10/2020 - 16:00");
             pstmt.setString(4, theatre1);
             pstmt.setInt(5, 20);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
@@ -121,7 +121,7 @@ public class PopulateDatabase implements Database {
             show2 = UUID.randomUUID().toString();
             pstmt.setString(1, show2);
             pstmt.setString(2, "Papillon");
-            pstmt.setString(3,"Nov. 30, 2020 - 20:00");
+            pstmt.setString(3,"12/30/2020 - 20:00");
             pstmt.setString(4, theatre2);
             pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)

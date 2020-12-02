@@ -266,8 +266,15 @@ public class MenuGUI extends JFrame {
 	}
 	
 	public String getMovie() {
-		String movie = movieTable.getValueAt(movieTable.getSelectedRow(), 0).toString();
-		return movie;
+		try {
+			String movie = movieTable.getValueAt(movieTable.getSelectedRow(), 0).toString();
+			return movie;
+		}
+		catch(Exception e) {
+			movieTable.clearSelection();
+			return null;
+		}
+		
 	}
 	
 	public void setSeatTable(DefaultTableModel sTable) {

@@ -6,7 +6,7 @@ public class FinancialInstitute
         this.name = name;
     }
 
-    public void verfiyPayementMethod(int cardNo, int CVV, String expDate, String nameOnCard) throws Exception
+    public void verfiyPayementMethod(String cardNo, int CVV, String expDate, String nameOnCard) throws Exception
     {
         if(AccountSystem.verifyPayment(cardNo, CVV, expDate, nameOnCard) == -1) {
         	throw new Exception();
@@ -15,7 +15,7 @@ public class FinancialInstitute
     }
 
     // Removes money from user's account based on "amount"
-    public void chargeUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount) throws Exception
+    public void chargeUser(String cardNo, int CVV, String expDate, String nameOnCard, double amount) throws Exception
     {
     	
     	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, -amount)) {
@@ -24,7 +24,7 @@ public class FinancialInstitute
     }
 
     // Returns money to user's account based on "amount"
-    public void refundUser(int cardNo, int CVV, String expDate, String nameOnCard, int amount) throws Exception
+    public void refundUser(String cardNo, int CVV, String expDate, String nameOnCard, double amount) throws Exception
     {
     	 if(!AccountSystem.transaction(cardNo, CVV, expDate, nameOnCard, amount)) {
          	throw new Exception();
