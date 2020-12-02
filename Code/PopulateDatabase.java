@@ -10,6 +10,8 @@ public class PopulateDatabase implements Database {
     private String theatre2;
     private String show1;
     private String show2;
+    private String show3;
+    private String show4;
 
     public PopulateDatabase() {
         try {
@@ -125,6 +127,24 @@ public class PopulateDatabase implements Database {
             pstmt.setString(4, theatre2);
             pstmt.setInt(5, 25);
             pstmt.executeUpdate(); // execute my query (i.e. sql)
+            String sql5 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";
+            pstmt = conn.prepareStatement(sql5);
+            show3 = UUID.randomUUID().toString();
+            pstmt.setString(1, show3);
+            pstmt.setString(2, "The New Mutants");
+            pstmt.setString(3,"12/15/2020 - 14:00");
+            pstmt.setString(4, theatre2);
+            pstmt.setInt(5, 25);
+            pstmt.executeUpdate(); // execute my query (i.e. sql)
+            String sql6 = "insert into Movie(id, name, time, theatreId, price) values(?,?,?,?,?)";
+            pstmt = conn.prepareStatement(sql6);
+            show4 = UUID.randomUUID().toString();
+            pstmt.setString(1, show4);
+            pstmt.setString(2, "Croods 2");
+            pstmt.setString(3,"12/29/2020 - 17:00");
+            pstmt.setString(4, theatre1);
+            pstmt.setInt(5, 20);
+            pstmt.executeUpdate(); // execute my query (i.e. sql)
             pstmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -165,7 +185,37 @@ public class PopulateDatabase implements Database {
                     pstmt.setString(1, show2);
                     pstmt.setString(2, seatNumber);
                     double random = Math.random();
+                    if(random < 0.1)
+                    	pstmt.setBoolean(3, false);
+                    else
+                    	pstmt.setBoolean(3, true);
+                    pstmt.executeUpdate(); // execute my query (i.e. sql)
+                }
+            }
+            for (int i = 1; i <= 5; i++) {
+                for (char y = 'A'; y <= 'E'; y++) {
+                    String sql3 = "insert into Seat(showId, seatNumber, availability) values(?,?,?)";
+                    String seatNumber = y + Integer.toString(i);
+                    pstmt = conn.prepareStatement(sql3);
+                    pstmt.setString(1, show3);
+                    pstmt.setString(2, seatNumber);
+                    double random = Math.random();
                     if(random < 0.2)
+                    	pstmt.setBoolean(3, false);
+                    else
+                    	pstmt.setBoolean(3, true);
+                    pstmt.executeUpdate(); // execute my query (i.e. sql)
+                }
+            }
+            for (int i = 1; i <= 10; i++) {
+                for (char y = 'A'; y <= 'D'; y++) {
+                    String sql3 = "insert into Seat(showId, seatNumber, availability) values(?,?,?)";
+                    String seatNumber = y + Integer.toString(i);
+                    pstmt = conn.prepareStatement(sql3);
+                    pstmt.setString(1, show4);
+                    pstmt.setString(2, seatNumber);
+                    double random = Math.random();
+                    if(random < 0.1)
                     	pstmt.setBoolean(3, false);
                     else
                     	pstmt.setBoolean(3, true);
